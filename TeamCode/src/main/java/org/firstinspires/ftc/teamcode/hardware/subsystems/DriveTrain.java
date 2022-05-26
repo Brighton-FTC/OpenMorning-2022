@@ -13,8 +13,8 @@ public class DriveTrain {
    * The motors on the drivetrain
    */
 
-  private final DcMotor leftMotor;
-  private final DcMotor rightMotor;
+  public final DcMotor leftMotor;
+  public final DcMotor rightMotor;
 
   /**
    * Create drivetrain from two DcMotors
@@ -43,16 +43,12 @@ public class DriveTrain {
    * @param rightPower Power for right motor (-1 to 1)
    */
   public void setMotorPowers(double leftPower, double rightPower) {
-//    if (Math.abs(leftPower) > 1 || Math.abs(rightPower) > 1) {
-//      if (IS_DEV)
-//        throw new RuntimeException(
-//            "The drivetrain powers are out of the range -1 to 1: " + leftPower +
-//            " " + rightPower);
-//      leftPower = Maths.clamp(leftPower, -1, 1);
-//      rightPower = Maths.clamp(rightPower, -1, 1);
-//    }
-//    this.leftMotor.setPower(leftPower);
-//    this.rightMotor.setPower(rightPower);
+    if (Math.abs(leftPower) > 1 || Math.abs(rightPower) > 1)
+      throw new RuntimeException(
+            "The drivetrain powers are out of the range -1 to 1: " + leftPower +
+            " " + rightPower);
+    this.leftMotor.setPower(leftPower);
+    this.rightMotor.setPower(rightPower);
   }
 
   /**

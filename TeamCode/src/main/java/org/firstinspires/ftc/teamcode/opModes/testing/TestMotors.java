@@ -47,6 +47,7 @@ public class TestMotors extends OpModeWrapper {
         DcMotor motor = motors[motorId];
         double power = Inputs.getRightJoystickData().y;
         telemetry.addData("Power", power);
+        telemetry.addData("Counts number", motor.getCurrentPosition());
         motor.setPower(power);
 
         telemetry.update();
