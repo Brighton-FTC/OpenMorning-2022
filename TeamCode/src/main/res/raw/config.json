@@ -1,0 +1,180 @@
+{ // all m and radians
+    "TEAM_DEV": {
+        "hardware": {
+            "wheelSeparation": 0.29,
+            "wheelDiameter": 0.09,
+            "gearRatio": 20.0,
+            "leftDriveName": "left_drive",
+            "rightDriveName": "right_drive",
+            "grabberServoName": "grabber",
+            "armMotorName": "motor_arm_team_dev",
+            "carouselSpinnerName": "carousel_spinner",
+            "drivetrainReversed": true,
+
+            // TODO: Update
+            "angleSlipFactor": 1.0,
+
+            // TODO: Update
+            "webcamForwardDisplacement": 0.0,
+            "webcamUpwardDisplacement": 0.0,
+            "webcamLeftDisplacement": 0.0,
+
+            "armMotorRadiansPerCount": 0.02181661564992912,
+            "armMotorMinHeight": 0.03, // above the floor
+            "armMotorMaxHeight": 0.5, // above the floor
+            "armHeight": 0.273,
+            "armLength": 0.4, // m
+            "armReversed": false,
+            "carouselReversed": false
+        },
+        "settings": {
+            "driveSensitivity": 1.0,
+            "armP": 4.0,
+            "armI": 0.0,
+            "armD": 0.0,
+            "armE": 4.5,
+
+            // TODO: Update
+            "driveP": 0.0,
+            "driveI": 0.0,
+            "driveD": 0.0,
+            "driveE": 0.0,
+
+            "teamBlue": false
+        },
+        "strategy": [ // Red panic
+            {
+                "id": "fd",
+                "param": 0.05
+            },
+            {
+                "id": "rt",
+                "param": 90
+            },
+            {
+                "id": "fd",
+                "param": 1
+            }
+        ]
+    },
+
+    "TEAM_ONE": {
+        "hardware": {
+            // TODO: Update
+            "wheelSeparation": 0.2,
+            "wheelDiameter": 0.09,
+            "gearRatio": 15.0,
+            "leftDriveName": "left_drive",
+            "rightDriveName": "right_drive",
+            "grabberServoName": "grabber",
+            "armMotorName": "motor_arm_team_1",
+            "carouselSpinnerName": "carousel_spinner",
+            "drivetrainReversed": false,
+
+            // TODO: Update
+            "angleSlipFactor": 1.0,
+
+            // TODO: Update
+            "webcamForwardDisplacement": 0.0,
+            "webcamUpwardDisplacement": 0.0,
+            "webcamLeftDisplacement": 0.0,
+
+            // TODO: Update
+            "armMotorRadiansPerCount": 0.005235987755982988,
+//            "armMotorRadiansPerCount": 0.007,
+            "armMotorMinHeight": 0.025,
+            "armMotorMaxHeight": 0.60,
+            "armLength": 0.39,
+            "armHeight": 0.295,
+            "armReversed": true,
+            "carouselReversed": true
+        },
+        "settings": {
+            "driveSensitivity": 1.0,
+            "armP": 4.0,
+            "armI": 0.0,
+            "armD": 0.0,
+            "armE": 5.0,
+
+            // TODO: Update
+            "driveP": 0.0,
+            "driveI": 0.0,
+            "driveD": 0.0,
+            "driveE": 0.0,
+
+            "teamBlue": false
+        },
+        "strategy": [ // Red Panic
+            {
+                "id": "fd",
+                "param": 0.05
+            },
+            {
+                "id": "rt",
+                "param": 90
+            },
+            {
+                "id": "fd",
+                "param": 1
+            }
+        ]
+    },
+
+    "TEAM_TWO": {
+        "hardware": {
+            "wheelDiameter": 0.09,
+            "gearRatio": 20.0,
+            "wheelSeparation": 0.3,
+            "leftDriveName": "left_drive",
+            "rightDriveName": "right_drive",
+            "grabberServoName": "grabber",
+            "armMotorName": "motor_arm_team_2",
+            "carouselSpinnerName": "carousel_spinner",
+            "drivetrainReversed": false,
+
+            "angleSlipFactor": 1.0,
+
+            // TODO: Update
+            "webcamForwardDisplacement": 0.0,
+            "webcamUpwardDisplacement": 0.0,
+            "webcamLeftDisplacement": 0.0,
+
+            // TODO: Update
+            "armMotorRadiansPerCount": 0.0136353847812057,
+            "armMotorMinHeight": 0.02,
+            "armMotorMaxHeight": 0.60,
+            "armLength": 0.36,
+            "armHeight": 0.325,
+            "armReversed": true,
+            "carouselReversed": true
+        },
+        "settings": {
+            "driveSensitivity": 1.0,
+            "armP": 6.0,
+            "armI": 0.0,
+            "armD": 0.0,
+            "armE": 0.0,
+            // TODO: Update
+            "driveP": 0.0,
+            "driveI": 0.0,
+            "driveD": 0.0,
+            "driveE": 0.0,
+
+            "teamBlue": true
+        },
+        "strategy": [ // Red panic
+            {
+                "id": "fd",
+                "param": 0.05
+            },
+            {
+                "id": "rt",
+                "param": 90
+            },
+            {
+                "id": "fd",
+                "param": 1
+            }
+        ]
+    }
+}
