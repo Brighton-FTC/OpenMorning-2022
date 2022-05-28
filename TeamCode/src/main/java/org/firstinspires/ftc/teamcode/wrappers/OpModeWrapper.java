@@ -6,6 +6,9 @@ import org.firstinspires.ftc.teamcode.inputs.GamepadWrapper;
 import org.firstinspires.ftc.teamcode.libs.util.TelemetryContainer;
 
 public abstract class OpModeWrapper extends OpMode {
+    /**
+     * A class that wraps an OpMode to set up inputs and outputs so they're accessible by classes
+     */
     public abstract void setup();
 
     @Override

@@ -13,7 +13,7 @@ import org.firstinspires.ftc.teamcode.inputs.XY;
 import org.firstinspires.ftc.teamcode.inputs.inputs.DebouncedButton;
 import org.firstinspires.ftc.teamcode.wrappers.OpModeWrapper;
 
-@TeleOp(name = "TeleOp Red", group = "TeleOp")
+@TeleOp(name = "Team 1 - TeleOp Red", group = "1_TeleOp")
 public class TeleOpRed extends OpModeWrapper {
 
     private DriveTrainController driveTrain;
@@ -34,10 +34,12 @@ public class TeleOpRed extends OpModeWrapper {
 
     @Override
     public void loop() {
+        /* Carousel Spinner */
         // use the triggers to rotate left or right
         double spinnerSpeed = Inputs.getRightTriggerData() - Inputs.getLeftTriggerData();
         spinner.spin(spinnerSpeed);
 
+        /* Drivetrain */
         XY leftJoystick = Inputs.getLeftJoystickData();
         driveTrain.drive(-leftJoystick.y, leftJoystick.x);
 
