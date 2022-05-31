@@ -1,15 +1,15 @@
 package org.firstinspires.ftc.teamcode.opModes.team1;
 
 import com.qualcomm.robotcore.eventloop.opmode.TeleOp;
+import com.qualcomm.robotcore.hardware.CRServo;
 import com.qualcomm.robotcore.hardware.DcMotor;
 
-import org.checkerframework.checker.units.qual.C;
-import org.firstinspires.ftc.robotcontroller.external.samples.BasicOpMode_Iterative;
 import org.firstinspires.ftc.teamcode.Constants;
 import org.firstinspires.ftc.teamcode.hardware.subsystems.CarouselSpinner;
 import org.firstinspires.ftc.teamcode.hardware.subsystems.DriveTrain;
 import org.firstinspires.ftc.teamcode.hardware.subsystems.DriveTrainController;
 import org.firstinspires.ftc.teamcode.hardware.subsystems.FlipsOverArm;
+import org.firstinspires.ftc.teamcode.hardware.subsystems.ServoIntake;
 import org.firstinspires.ftc.teamcode.inputs.GamepadButton;
 import org.firstinspires.ftc.teamcode.inputs.Inputs;
 import org.firstinspires.ftc.teamcode.inputs.XY;
@@ -22,6 +22,7 @@ public class TeleOpBlue extends OpModeWrapper {
     private DriveTrainController driveTrain;
     private CarouselSpinner spinner;
     private FlipsOverArm arm;
+    private ServoIntake intake;
 
     @Override
     public void setup() {
@@ -41,6 +42,7 @@ public class TeleOpBlue extends OpModeWrapper {
                 Constants.TEAM1_ARM_FRONT_ANGLE,
                 Constants.TEAM1_ARM_BACK_ANGLE
         );
+        intake = new ServoIntake(hardwareMap.get(CRServo.class, "intake"), false);
     }
 
     /**
@@ -54,19 +56,30 @@ public class TeleOpBlue extends OpModeWrapper {
     @Override
     public void loop() {
         /* Carousel Spinner*/
-        // use the triggers to rotate left or right
+        // CONTROLS: use the triggers to rotate left or right
         double spinnerSpeed = Inputs.getRightTriggerData() - Inputs.getLeftTriggerData();
         spinner.spin(spinnerSpeed);
 
+        /* Intake servo*/
+        // CONTROLS: use the direction pad up/down
+        double intakeSpeed = 0.0;
+        if(Inputs.isPressed(GamepadButton.D_UP)) {
+            intakeSpeed = 1.0;
+        } else if(Inputs.isPressed(GamepadButton.D_DOWN)) {
+            intakeSpeed = -1.0;
+        }
+        intake.spin(intakeSpeed);
+
 
         /* Arm */
-        // Cross to toggle
+        // CONTROLS: Cross to toggle
         if(Inputs.isPressed(GamepadButton.CROSS)) {
             arm.togglePosition(Constants.TEAM1_ARM_SPEED);
         }
         arm.moveToFront(Constants.TEAM1_ARM_SPEED); // Hover
 
         /* Drivetrain */
+        // CONTROLS: Left joystick
         XY leftJoystick = Inputs.getLeftJoystickData();
         driveTrain.drive(-leftJoystick.y, leftJoystick.x);
 
