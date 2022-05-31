@@ -28,10 +28,20 @@ public class CustomPIDEMotor {
 
     /** Update the PID
      * @param externalTerm an additional term that can be supplied to be added to the result
-     * @return the output of PID
      */
     public void update(double externalTerm){
         double correction = controller.update(motor.getCurrentPosition(), externalTerm);
         motor.setPower(correction);
+    }
+
+    /**
+     *   Returns the current reading of the encoder for this motor. The units for this reading,
+     * that is, the number of ticks per revolution, are specific to the motor/encoder in question,
+     * and thus are not specified here.
+     * @return the current reading of the encoder for this motor
+     * @see DcMotor#getCurrentPosition()
+    */
+    public int getCurrentPosition() {
+        return this.motor.getCurrentPosition();
     }
 }
