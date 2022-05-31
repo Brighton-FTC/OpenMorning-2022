@@ -16,6 +16,7 @@ public class Constants {
     public static final double TEAM1_ARM_COUNTS_PER_RADIAN = 30;
     public static final double TEAM1_ARM_FRONT_ANGLE = 0;
     public static final double TEAM1_ARM_BACK_ANGLE = 0.8 * Math.PI;
+    public static final double TEAM1_ARM_SPEED = 0.5;
 
     // TODO: change
     // T2 - drivetrain

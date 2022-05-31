@@ -10,6 +10,10 @@ import com.qualcomm.robotcore.hardware.DcMotorSimple;
 public class FlipsOverArm { // TODO: Name this something better
     double frontAngle;
     double backAngle;
+    /**
+     * Is the arm at the back of the robot?
+     */
+    boolean atBack;
 
     DcMotor motor;
     /**
@@ -61,6 +65,7 @@ public class FlipsOverArm { // TODO: Name this something better
         this.motor.setPower(speed);
         this.motor.setZeroPowerBehavior(DcMotor.ZeroPowerBehavior.BRAKE);
         this.moveToRadians(this.frontAngle);
+        this.atBack = false;
     }
 
     /**
@@ -71,6 +76,18 @@ public class FlipsOverArm { // TODO: Name this something better
         this.motor.setPower(speed);
         this.motor.setZeroPowerBehavior(DcMotor.ZeroPowerBehavior.BRAKE);
         this.moveToRadians(this.backAngle);
+        this.atBack = true;
     }
 
+    /**
+     * Toggle whether the arm is at the front or back of the robot
+     * @param speed (0>1) maximum speed of the motor
+     */
+    public void togglePosition(double speed) {
+        if(this.atBack) {
+            this.moveToFront(speed);
+        } else {
+            this.moveToBack(speed);
+        }
+    }
 }

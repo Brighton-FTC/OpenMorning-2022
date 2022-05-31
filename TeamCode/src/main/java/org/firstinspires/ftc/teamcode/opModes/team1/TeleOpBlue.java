@@ -4,6 +4,7 @@ import com.qualcomm.robotcore.eventloop.opmode.TeleOp;
 import com.qualcomm.robotcore.hardware.DcMotor;
 
 import org.checkerframework.checker.units.qual.C;
+import org.firstinspires.ftc.robotcontroller.external.samples.BasicOpMode_Iterative;
 import org.firstinspires.ftc.teamcode.Constants;
 import org.firstinspires.ftc.teamcode.hardware.subsystems.CarouselSpinner;
 import org.firstinspires.ftc.teamcode.hardware.subsystems.DriveTrain;
@@ -42,12 +43,28 @@ public class TeleOpBlue extends OpModeWrapper {
         );
     }
 
+    /**
+     * First movement done here.
+     */
+    @Override
+    public void start() {
+        arm.moveToFront(Constants.TEAM1_ARM_SPEED); // Hover
+    }
+
     @Override
     public void loop() {
         /* Carousel Spinner*/
         // use the triggers to rotate left or right
         double spinnerSpeed = Inputs.getRightTriggerData() - Inputs.getLeftTriggerData();
         spinner.spin(spinnerSpeed);
+
+
+        /* Arm */
+        // Cross to toggle
+        if(Inputs.isPressed(GamepadButton.CROSS)) {
+            arm.togglePosition(Constants.TEAM1_ARM_SPEED);
+        }
+        arm.moveToFront(Constants.TEAM1_ARM_SPEED); // Hover
 
         /* Drivetrain */
         XY leftJoystick = Inputs.getLeftJoystickData();

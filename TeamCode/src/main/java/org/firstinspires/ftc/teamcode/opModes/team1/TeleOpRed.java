@@ -7,6 +7,7 @@ import org.firstinspires.ftc.teamcode.Constants;
 import org.firstinspires.ftc.teamcode.hardware.subsystems.CarouselSpinner;
 import org.firstinspires.ftc.teamcode.hardware.subsystems.DriveTrain;
 import org.firstinspires.ftc.teamcode.hardware.subsystems.DriveTrainController;
+import org.firstinspires.ftc.teamcode.hardware.subsystems.FlipsOverArm;
 import org.firstinspires.ftc.teamcode.inputs.GamepadButton;
 import org.firstinspires.ftc.teamcode.inputs.Inputs;
 import org.firstinspires.ftc.teamcode.inputs.XY;
@@ -18,6 +19,7 @@ public class TeleOpRed extends OpModeWrapper {
 
     private DriveTrainController driveTrain;
     private CarouselSpinner spinner;
+    private FlipsOverArm arm;
 
     @Override
     public void setup() {
@@ -30,6 +32,21 @@ public class TeleOpRed extends OpModeWrapper {
                 Constants.TEAM1_DRIVETRAIN_COUNTS_PER_RADIAN,
                 Constants.TEAM1_DRIVETRAIN_COUNTS_PER_METER
         );
+        arm = new FlipsOverArm(
+                hardwareMap.get(DcMotor.class, "arm"),
+                false,
+                Constants.TEAM1_ARM_COUNTS_PER_RADIAN,
+                Constants.TEAM1_ARM_FRONT_ANGLE,
+                Constants.TEAM1_ARM_BACK_ANGLE
+        );
+    }
+
+    /**
+     * First movement done here.
+     */
+    @Override
+    public void start() {
+        arm.moveToFront(Constants.TEAM1_ARM_SPEED); // Hover
     }
 
     @Override
@@ -38,6 +55,13 @@ public class TeleOpRed extends OpModeWrapper {
         // use the triggers to rotate left or right
         double spinnerSpeed = Inputs.getRightTriggerData() - Inputs.getLeftTriggerData();
         spinner.spin(spinnerSpeed);
+
+        /* Arm */
+        // Cross to toggle
+        if(Inputs.isPressed(GamepadButton.CROSS)) {
+            arm.togglePosition(Constants.TEAM1_ARM_SPEED);
+        }
+        arm.moveToFront(Constants.TEAM1_ARM_SPEED); // Hover
 
         /* Drivetrain */
         XY leftJoystick = Inputs.getLeftJoystickData();
