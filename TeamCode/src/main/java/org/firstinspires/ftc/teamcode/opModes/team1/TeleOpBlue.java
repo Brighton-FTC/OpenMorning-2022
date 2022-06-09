@@ -39,8 +39,8 @@ public class TeleOpBlue extends OpModeWrapper {
                 hardwareMap.get(DcMotor.class, "arm"),
                 false,
                 Constants.TEAM1_ARM_COUNTS_PER_RADIAN,
-                Constants.TEAM1_ARM_FRONT_ANGLE,
-                Constants.TEAM1_ARM_BACK_ANGLE
+                Constants.TEAM1_ARM_FRONT_COUNTS,
+                Constants.TEAM1_ARM_BACK_COUNTS
         );
         intake = new ServoIntake(hardwareMap.get(CRServo.class, "intake"), false);
     }

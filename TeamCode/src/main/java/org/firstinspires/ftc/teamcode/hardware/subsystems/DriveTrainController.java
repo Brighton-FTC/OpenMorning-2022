@@ -1,5 +1,7 @@
 package org.firstinspires.ftc.teamcode.hardware.subsystems;
 
+import static java.lang.Thread.sleep;
+
 import com.qualcomm.robotcore.hardware.DcMotor;
 
 public class DriveTrainController {
@@ -52,5 +54,9 @@ public class DriveTrainController {
         driveTrain.rightMotor.setTargetPosition(desiredRightCounts);
         driveTrain.leftMotor.setMode(DcMotor.RunMode.RUN_TO_POSITION);
         driveTrain.rightMotor.setMode(DcMotor.RunMode.RUN_TO_POSITION);
+    }
+
+    public void waitWhileBusy() throws InterruptedException {
+        while (this.isBusy()) { sleep(50); }
     }
 }

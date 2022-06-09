@@ -8,8 +8,8 @@ import com.qualcomm.robotcore.hardware.DcMotorSimple;
  * NOTE: The arm should start resting on the floor as all angles are relative to this.
  */
 public class FlipsOverArm { // TODO: Name this something better
-    double frontAngle;
-    double backAngle;
+    int frontCounts;
+    int backCounts;
     /**
      * Is the arm at the back of the robot?
      */
@@ -25,13 +25,13 @@ public class FlipsOverArm { // TODO: Name this something better
      * @param motor CRServo motor
      * @param isReversed Toggle this if the motor tries to move the arm down.
      * @param countsPerRadian (counts) Number of counts per radian of the arm motor
-     * @param frontAngle (rad) The angle relative to the starting angle of where to keep the arm when *not* flipped
-     * @param backAngle (rad) The angle relative to the starting angle of where to keep the arm when *flipped*
+     * @param frontCounts (rad) The counts relative to the starting angle of where to keep the arm when *not* flipped
+     * @param backCounts (rad) The counts relative to the starting angle of where to keep the arm when *flipped*
      */
-    public FlipsOverArm(DcMotor motor, boolean isReversed, double countsPerRadian, double frontAngle, double backAngle) {
+    public FlipsOverArm(DcMotor motor, boolean isReversed, double countsPerRadian, int frontCounts, int backCounts) {
         this.motor = motor;
-        this.frontAngle = frontAngle;
-        this.backAngle = backAngle;
+        this.frontCounts = frontCounts;
+        this.backCounts = backCounts;
         /* Initialise encoders */
         if(isReversed) motor.setDirection(DcMotorSimple.Direction.REVERSE);
         this.motor.setMode(DcMotor.RunMode.STOP_AND_RESET_ENCODER);
@@ -48,13 +48,6 @@ public class FlipsOverArm { // TODO: Name this something better
         this.motor.setTargetPosition(desiredCounts);
         this.motor.setMode(DcMotor.RunMode.RUN_TO_POSITION);
     }
-    /**
-     * Move to a desired position by radians
-     * @param desiredRadians number of radians relative to starting pos
-     */
-    public void moveToRadians(double desiredRadians) {
-        this.moveToCounts((int) (desiredRadians * countsPerRadian));
-    }
 
     /**
      * Hover above the ground so it doesn't scrape.
@@ -64,7 +57,7 @@ public class FlipsOverArm { // TODO: Name this something better
     public void moveToFront(double speed) {
         this.motor.setPower(speed);
         this.motor.setZeroPowerBehavior(DcMotor.ZeroPowerBehavior.BRAKE);
-        this.moveToRadians(this.frontAngle);
+        this.moveToCounts(this.frontCounts);
         this.atBack = false;
     }
 
@@ -75,7 +68,7 @@ public class FlipsOverArm { // TODO: Name this something better
     public void moveToBack(double speed) {
         this.motor.setPower(speed);
         this.motor.setZeroPowerBehavior(DcMotor.ZeroPowerBehavior.BRAKE);
-        this.moveToRadians(this.backAngle);
+        this.moveToCounts(this.backCounts);
         this.atBack = true;
     }
 
