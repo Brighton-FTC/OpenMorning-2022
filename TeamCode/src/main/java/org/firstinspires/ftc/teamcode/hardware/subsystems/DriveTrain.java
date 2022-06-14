@@ -3,6 +3,7 @@ package org.firstinspires.ftc.teamcode.hardware.subsystems;
 import com.qualcomm.robotcore.hardware.DcMotor;
 
 import org.firstinspires.ftc.teamcode.libs.util.Maths;
+import org.firstinspires.ftc.teamcode.libs.util.TelemetryContainer;
 
 /**
  * A class that represents a drivetrain subsystem of a robot
@@ -68,6 +69,8 @@ public class DriveTrain {
       leftPower /= scalingFactor;
       rightPower /= scalingFactor;
     }
+
+    TelemetryContainer.getTelemetry().addData("Powers", leftPower + " "+ rightPower);
 
     // Return values
     setMotorPowers(leftPower, rightPower);

@@ -14,6 +14,13 @@ import org.firstinspires.ftc.teamcode.inputs.inputs.DebouncedButton;
 import org.firstinspires.ftc.teamcode.inputs.inputs.ToggleableButton;
 import org.firstinspires.ftc.teamcode.wrappers.OpModeWrapper;
 
+/**
+ * An opmode for testing motors
+ * Press L_BUMPER to toggle drivetrain operation (note that it might override motors 0 and 1
+ * Press R_BUMPER to toggle between selecting motors and servos
+ * Press the circle, square, etc. buttons to select a motor
+ * Move the left joystick to change the power given to the motor
+ */
 @TeleOp(name = "Test motors", group = "Test")
 public class TestMotors extends OpModeWrapper {
 
@@ -34,7 +41,7 @@ public class TestMotors extends OpModeWrapper {
     CRServo[] crServos;
     DcMotor[] motors;
     DebouncedButton[] selectionButtons;
-    ToggleableButton drivetrainToggleButton;
+    ToggleableButton selectServosToggleButton;
 
     DriveTrainController driveTrain;
 
@@ -43,7 +50,7 @@ public class TestMotors extends OpModeWrapper {
         motors = new DcMotor[4];
         crServos = new CRServo[4];
 
-        drivetrainToggleButton = new ToggleableButton(GamepadButton.L_BUMPER, false);
+        selectServosToggleButton = new ToggleableButton(GamepadButton.R_BUMPER, false);
 
         driveTrain = new DriveTrainController(new DriveTrain(
                 hardwareMap.get(DcMotor.class, motorNames[0]),
@@ -70,10 +77,21 @@ public class TestMotors extends OpModeWrapper {
 
     @Override
     public void loop() {
-        boolean drivetrainButton = drivetrainToggleButton.processTick();
-        boolean isSelectingServos = Inputs.isPressed(GamepadButton.R_BUMPER);
+
+        XY leftJoystick = Inputs.getLeftJoystickData();
+
+        if (leftJoystick.y != 0 || leftJoystick.x != 0) {
+            telemetry.addLine("Driving");
+
+            driveTrain.drive(-leftJoystick.y, leftJoystick.x);
+
+            telemetry.update();
+            return;
+        }
+
+        boolean isSelectingServos = selectServosToggleButton.processTick();
         telemetry.addData("Selected "+ (isSelectingServos ? "servo": "motor") + ": ", (isSelectingServos ? servoNames : motorNames)[motorId]);
-        telemetry.addData("Drivetrain enabled?", drivetrainButton);
+        telemetry.addLine("Setting motor powers");
         telemetry.addLine("Press triangle/circle/etc buttons");
 
         // select one of the motors
@@ -91,11 +109,6 @@ public class TestMotors extends OpModeWrapper {
             motor.setPower(power);
             telemetry.addData("Power", power);
             telemetry.addData("Counts number", motor.getCurrentPosition());
-        }
-
-        if (drivetrainButton) {
-            XY leftJoystick = Inputs.getLeftJoystickData();
-            driveTrain.drive(-leftJoystick.y, leftJoystick.x);
         }
 
         telemetry.update();
