@@ -28,7 +28,7 @@ public class AutonomousDriveForward {
         Telemetry telemetry = TelemetryContainer.getTelemetry();
 
         driveTrain.startDrivingForward(3, 0.5);
-        opMode.sleep(3000);
+        opMode.sleep(10000);
 //        driveTrain.waitWhileBusy();
         telemetry.addData("Subroutine", "completed");
     }

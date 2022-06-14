@@ -24,14 +24,14 @@ import org.firstinspires.ftc.teamcode.wrappers.OpModeWrapper;
 @TeleOp(name = "Test motors", group = "Test")
 public class TestMotors extends OpModeWrapper {
 
-    int motorId = 0;
 
     String[] motorNames = {
             "motor_0",
             "motor_1",
             "motor_2",
             "motor_3",
-    };
+    };  int motorId = 0;
+
     String[] servoNames = {
             "servo_0",
             "servo_1",

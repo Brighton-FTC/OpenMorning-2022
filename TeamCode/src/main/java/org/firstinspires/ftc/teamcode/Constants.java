@@ -11,9 +11,10 @@ public class Constants {
     public static final double TEAM1_DRIVETRAIN_WHEEL_DIAMETER = 0.09; // 90mm
     public static final int TEAM1_DRIVETRAIN_GEAR_RATIO = 20; // 20:1
     public static final int TEAM1_DRIVETRAIN_RAW_COUNTS_PER_ROTATION = 28; // HD HEX
+    public static final int TEAM1_DRIVETRAIN_COUNTS_PER_ROTATION = TEAM1_DRIVETRAIN_RAW_COUNTS_PER_ROTATION * TEAM1_DRIVETRAIN_GEAR_RATIO; // HD HEX
 
-    public static final double TEAM1_DRIVETRAIN_COUNTS_PER_RADIAN = TEAM1_DRIVETRAIN_RAW_COUNTS_PER_ROTATION / (2 * Math.PI);
-    public static final double TEAM1_DRIVETRAIN_COUNTS_PER_METER = (TEAM1_DRIVETRAIN_RAW_COUNTS_PER_ROTATION * TEAM1_DRIVETRAIN_WHEEL_DIAMETER) / (Math.PI * TEAM1_DRIVETRAIN_WHEEL_DIAMETER); // counts per rotation * gear ratio  / pi * d (m) // Dev - change
+    public static final double TEAM1_DRIVETRAIN_COUNTS_PER_RADIAN = TEAM1_DRIVETRAIN_COUNTS_PER_ROTATION / (2 * Math.PI);
+    public static final double TEAM1_DRIVETRAIN_COUNTS_PER_METER = TEAM1_DRIVETRAIN_COUNTS_PER_ROTATION / (Math.PI * TEAM1_DRIVETRAIN_WHEEL_DIAMETER); // counts per rotation * gear ratio  / pi * d (m)
 
     // TODO: change
     // T1 - arm
