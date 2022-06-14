@@ -1,7 +1,6 @@
 package org.firstinspires.ftc.teamcode.opModes.team1.subroutines;
 
-import static java.lang.Thread.sleep;
-
+import com.qualcomm.robotcore.eventloop.opmode.LinearOpMode;
 import com.qualcomm.robotcore.hardware.DcMotor;
 import com.qualcomm.robotcore.hardware.HardwareMap;
 
@@ -13,7 +12,11 @@ import org.firstinspires.ftc.teamcode.libs.util.TelemetryContainer;
 
 public class AutonomousDriveForward {
     // TODO: Should we move this to OpModes/subroutines as I think it is not team-specific?
-    public void run(HardwareMap hardwareMap) throws InterruptedException {
+    public void run(LinearOpMode opMode) {
+        // Get hardwareMap
+        HardwareMap hardwareMap = opMode.hardwareMap;
+
+        // BODY
         DriveTrainController driveTrain = new DriveTrainController(new DriveTrain(
                 hardwareMap.get(DcMotor.class, "left_drivetrain_motor"),
                 hardwareMap.get(DcMotor.class, "right_drivetrain_motor"),
@@ -25,7 +28,8 @@ public class AutonomousDriveForward {
         Telemetry telemetry = TelemetryContainer.getTelemetry();
 
         driveTrain.startDrivingForward(3, 0.5);
-        driveTrain.waitWhileBusy();
+        opMode.sleep(3000);
+//        driveTrain.waitWhileBusy();
         telemetry.addData("Subroutine", "completed");
     }
 }

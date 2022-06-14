@@ -10,6 +10,13 @@ public class AutonomousBlue extends LinearOpModeWrapper {
 
     @Override
     public void run() throws InterruptedException {
-        new AutonomousDriveForward().run(hardwareMap);
+        {
+            // INIT
+        }
+        waitForStart();
+        {
+            // RUN
+            new AutonomousDriveForward().run(this);
+        }
     }
 }
