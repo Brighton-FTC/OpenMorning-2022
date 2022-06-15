@@ -17,9 +17,18 @@ public class DriveTrainController {
         driveTrainState = DriveTrainState.DRIVER_CONTROLLED;
     }
 
-    public void drive(double speed, double turn) {
+    public void drive_scaled(double speed, double turn) {
         driveTrainState = DriveTrainState.DRIVER_CONTROLLED;
+
+        // scale from -1 to 1
+        speed = scale(speed);
+        turn = scale(turn);
+
         driveTrain.arcadeDriveScale(speed, turn);
+    }
+
+    private static double scale(double value) {
+        return Math.signum(value) * 0.5 * (1.0 - Math.cos(value * Math.PI));
     }
 
     public boolean isBusy(){

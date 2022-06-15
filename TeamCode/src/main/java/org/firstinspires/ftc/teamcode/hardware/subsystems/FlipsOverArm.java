@@ -17,18 +17,13 @@ public class FlipsOverArm { // TODO: Name this something better
 
     DcMotor motor;
     /**
-     * Number of counts per radian of the arm motor
-     */
-    double countsPerRadian;
-    /**
      * Set up a FlipsOverArm
      * @param motor CRServo motor
      * @param isReversed Toggle this if the motor tries to move the arm down.
-     * @param countsPerRadian (counts) Number of counts per radian of the arm motor
      * @param frontCounts (rad) The counts relative to the starting angle of where to keep the arm when *not* flipped
      * @param backCounts (rad) The counts relative to the starting angle of where to keep the arm when *flipped*
      */
-    public FlipsOverArm(DcMotor motor, boolean isReversed, double countsPerRadian, int frontCounts, int backCounts) {
+    public FlipsOverArm(DcMotor motor, boolean isReversed, int frontCounts, int backCounts) {
         this.motor = motor;
         this.frontCounts = frontCounts;
         this.backCounts = backCounts;
@@ -36,15 +31,19 @@ public class FlipsOverArm { // TODO: Name this something better
         if(isReversed) motor.setDirection(DcMotorSimple.Direction.REVERSE);
         this.motor.setMode(DcMotor.RunMode.STOP_AND_RESET_ENCODER);
         this.motor.setMode(DcMotor.RunMode.RUN_WITHOUT_ENCODER);
+    }
 
-        this.countsPerRadian = countsPerRadian;
+    public void powerDown() {
+        this.motor.setPower(0);
     }
 
     /**
      * Move to a desired position by encoders
      * @param desiredCounts number of encoder counts relative to starting pos
      */
-    public void moveToCounts(int desiredCounts) {
+    public void moveToCounts(int desiredCounts, double speed) {
+        this.motor.setPower(speed);
+        this.motor.setZeroPowerBehavior(DcMotor.ZeroPowerBehavior.BRAKE);
         this.motor.setTargetPosition(desiredCounts);
         this.motor.setMode(DcMotor.RunMode.RUN_TO_POSITION);
     }
@@ -55,9 +54,7 @@ public class FlipsOverArm { // TODO: Name this something better
      * @param speed (0>1) maximum speed of the motor
      */
     public void moveToFront(double speed) {
-        this.motor.setPower(speed);
-        this.motor.setZeroPowerBehavior(DcMotor.ZeroPowerBehavior.BRAKE);
-        this.moveToCounts(this.frontCounts);
+        this.moveToCounts(this.frontCounts, speed);
         this.atBack = false;
     }
 
@@ -66,21 +63,7 @@ public class FlipsOverArm { // TODO: Name this something better
      * @param speed (0>1) maximum speed of the motor
      */
     public void moveToBack(double speed) {
-        this.motor.setPower(speed);
-        this.motor.setZeroPowerBehavior(DcMotor.ZeroPowerBehavior.BRAKE);
-        this.moveToCounts(this.backCounts);
+        this.moveToCounts(this.backCounts, speed);
         this.atBack = true;
-    }
-
-    /**
-     * Toggle whether the arm is at the front or back of the robot
-     * @param speed (0>1) maximum speed of the motor
-     */
-    public void togglePosition(double speed) {
-        if(this.atBack) {
-            this.moveToFront(speed);
-        } else {
-            this.moveToBack(speed);
-        }
     }
 }

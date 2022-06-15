@@ -42,6 +42,7 @@ public class TestMotors extends OpModeWrapper {
     DcMotor[] motors;
     DebouncedButton[] selectionButtons;
     ToggleableButton selectServosToggleButton;
+    ToggleableButton driveToggleButton;
 
     DriveTrainController driveTrain;
 
@@ -51,6 +52,7 @@ public class TestMotors extends OpModeWrapper {
         crServos = new CRServo[4];
 
         selectServosToggleButton = new ToggleableButton(GamepadButton.R_BUMPER, false);
+        driveToggleButton = new ToggleableButton(GamepadButton.L_BUMPER, true);
 
         driveTrain = new DriveTrainController(new DriveTrain(
                 hardwareMap.get(DcMotor.class, motorNames[0]),
@@ -77,13 +79,13 @@ public class TestMotors extends OpModeWrapper {
 
     @Override
     public void loop() {
+        boolean isDriving = driveToggleButton.processTick();
+        if (isDriving) {
+            XY leftJoystick = Inputs.getLeftJoystickData();
 
-        XY leftJoystick = Inputs.getLeftJoystickData();
-
-        if (leftJoystick.y != 0 || leftJoystick.x != 0) {
             telemetry.addLine("Driving");
 
-            driveTrain.drive(-leftJoystick.y, leftJoystick.x);
+            driveTrain.drive_scaled(-leftJoystick.y, leftJoystick.x);
 
             telemetry.update();
             return;
