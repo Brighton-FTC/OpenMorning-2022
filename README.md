@@ -12,6 +12,8 @@
 - `#RTD`
   - [FTC Javadoc Docs](https://javadoc.io/doc/org.firstinspires.ftc)
   - [Android Reference](https://developer.android.com/reference)
+- General
+  - [Kickoff Concepts](https://docs.revrobotics.com/kickoff-concepts)
 
 ## Team Guidance
 ### Controls
