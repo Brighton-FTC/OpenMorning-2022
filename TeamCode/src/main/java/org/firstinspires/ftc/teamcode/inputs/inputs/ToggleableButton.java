@@ -4,7 +4,7 @@ import org.firstinspires.ftc.teamcode.inputs.GamepadButton;
 import org.firstinspires.ftc.teamcode.inputs.Inputs;
 
 public class ToggleableButton {
-    private DebouncedButton button;
+    private final DebouncedButton button;
     private boolean state;
     public ToggleableButton (GamepadButton button, boolean initialState) {
         this.button = new DebouncedButton(button);

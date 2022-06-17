@@ -18,7 +18,6 @@ public class Constants {
 
     // TODO: change
     // T1 - arm
-    public static final double TEAM1_ARM_COUNTS_PER_RADIAN = 30;
     public static final int TEAM1_ARM_FRONT_COUNTS = 50;
     public static final int TEAM1_ARM_BACK_COUNTS = 550;
     public static final double TEAM1_ARM_SPEED = 0.5;
@@ -28,5 +27,11 @@ public class Constants {
     public static final double TEAM2_DRIVETRAIN_COUNTS_PER_RADIAN = 30;
     public static final double TEAM2_DRIVETRAIN_COUNTS_PER_METER = 30;
 
-    public static final boolean IS_DEV = true; // TODO: Change in prod
+    // T2 - arm
+    public static final int TEAM2_SLIDE_FRONT_COUNTS = 50;
+    public static final int TEAM2_SLIDE_BACK_COUNTS = 200;
+    public static final double TEAM2_SLIDE_SPEED = 0.5;
+
+    // T2 - intake
+    public static final double TEAM2_INTAKE_SPEED = 1.0;
 }
