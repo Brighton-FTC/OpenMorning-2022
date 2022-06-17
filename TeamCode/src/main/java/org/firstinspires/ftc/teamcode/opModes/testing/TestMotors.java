@@ -17,9 +17,15 @@ import org.firstinspires.ftc.teamcode.wrappers.OpModeWrapper;
 /**
  * An opmode for testing motors
  * Press L_BUMPER to toggle drivetrain operation (note that it might override motors 0 and 1
- * Press R_BUMPER to toggle between selecting motors and servos
- * Press the circle, square, etc. buttons to select a motor
- * Move the left joystick to change the power given to the motor
+ * Drivetrain:
+ *  Left joystick to control
+ *  Circle to reset counts on telemetry
+ * Motors:
+ *  Press R_BUMPER to toggle between selecting motors and servos
+ *  Press the circle, square, etc. buttons to select a motor
+ *  Cross to switch off motor
+ *  Move the left joystick to change the power given to the motor;
+ *  if you change motors with the joystick held, the motor will stay at that power
  */
 @TeleOp(name = "Test motors", group = "Test")
 public class TestMotors extends OpModeWrapper {
@@ -41,15 +47,22 @@ public class TestMotors extends OpModeWrapper {
     CRServo[] crServos;
     DcMotor[] motors;
     DebouncedButton[] selectionButtons;
+    DebouncedButton resetDrivetrainEncoders;
     ToggleableButton selectServosToggleButton;
     ToggleableButton driveToggleButton;
+    ToggleableButton driveTrainLockHorizontalComponentButton;
 
     DriveTrainController driveTrain;
+    int driveLeftLastPos;
+    int driveRightLastPos;
 
     @Override
     public void setup() {
         motors = new DcMotor[4];
         crServos = new CRServo[4];
+
+        resetDrivetrainEncoders = new DebouncedButton(GamepadButton.CIRCLE);
+        driveTrainLockHorizontalComponentButton = new ToggleableButton(GamepadButton.CROSS, false);
 
         selectServosToggleButton = new ToggleableButton(GamepadButton.R_BUMPER, false);
         driveToggleButton = new ToggleableButton(GamepadButton.L_BUMPER, true);
@@ -62,6 +75,9 @@ public class TestMotors extends OpModeWrapper {
                 Constants.TEAM1_DRIVETRAIN_COUNTS_PER_RADIAN,
                 Constants.TEAM1_DRIVETRAIN_COUNTS_PER_METER
         );
+        // Number of counts since start
+        driveLeftLastPos = driveTrain.driveTrain.leftMotor.getCurrentPosition();
+        driveRightLastPos = driveTrain.driveTrain.leftMotor.getCurrentPosition();
 
         for (int i = 0; i < motorNames.length; i++) {
             crServos[i] = hardwareMap.get(CRServo.class, servoNames[i]);
@@ -83,9 +99,23 @@ public class TestMotors extends OpModeWrapper {
         if (isDriving) {
             XY leftJoystick = Inputs.getLeftJoystickData();
 
+            if (resetDrivetrainEncoders.processTick()) {
+                // Reset position
+                driveLeftLastPos = driveTrain.driveTrain.leftMotor.getCurrentPosition();
+                driveRightLastPos = driveTrain.driveTrain.rightMotor.getCurrentPosition();
+            }
+
+            double speed = -leftJoystick.y * 0.5;
+            double turn = leftJoystick.x;
+
+            if (driveTrainLockHorizontalComponentButton.processTick()) turn = 0.0;
+
             telemetry.addLine("Driving");
 
-            driveTrain.drive_scaled(-leftJoystick.y, leftJoystick.x);
+            driveTrain.drive_scaled(speed, turn);
+
+            telemetry.addData("Drivetrain L Counts", driveTrain.driveTrain.leftMotor.getCurrentPosition() - driveLeftLastPos);
+            telemetry.addData("Drivetrain R Counts", driveTrain.driveTrain.rightMotor.getCurrentPosition() - driveRightLastPos);
 
             telemetry.update();
             return;

@@ -12,7 +12,7 @@ import org.firstinspires.ftc.teamcode.libs.util.TelemetryContainer;
 
 public class AutonomousDriveForward {
     // TODO: Should we move this to OpModes/subroutines as I think it is not team-specific?
-    public void run(LinearOpMode opMode) {
+    public void run(LinearOpMode opMode) throws InterruptedException {
         // Get hardwareMap
         HardwareMap hardwareMap = opMode.hardwareMap;
 
@@ -28,8 +28,7 @@ public class AutonomousDriveForward {
         Telemetry telemetry = TelemetryContainer.getTelemetry();
 
         driveTrain.startDrivingForward(3, 0.5);
-        opMode.sleep(10000);
-//        driveTrain.waitWhileBusy();
+        driveTrain.waitWhileBusy();
         telemetry.addData("Subroutine", "completed");
     }
 }

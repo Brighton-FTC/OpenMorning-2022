@@ -5,7 +5,7 @@ import static java.lang.Thread.sleep;
 import com.qualcomm.robotcore.hardware.DcMotor;
 
 public class DriveTrainController {
-    private final DriveTrain driveTrain;
+    public final DriveTrain driveTrain;
     private final double countsPerRadian;
     private final double countPerMeter;
     private DriveTrainState driveTrainState;

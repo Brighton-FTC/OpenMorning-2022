@@ -11,6 +11,10 @@ public class DebouncedButton {
         this.wasPressedLastTick = false;
     }
 
+    /**
+     * Return true if pressed
+     * @return true if pressed
+     */
     public boolean processTick() {
         boolean isDown = Inputs.isPressed(button);
 
