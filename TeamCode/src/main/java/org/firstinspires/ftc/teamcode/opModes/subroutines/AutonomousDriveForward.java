@@ -4,10 +4,12 @@ import com.qualcomm.robotcore.eventloop.opmode.LinearOpMode;
 import com.qualcomm.robotcore.hardware.DcMotor;
 import com.qualcomm.robotcore.hardware.HardwareMap;
 
+import org.checkerframework.checker.units.qual.C;
 import org.firstinspires.ftc.robotcore.external.Telemetry;
 import org.firstinspires.ftc.teamcode.Constants;
 import org.firstinspires.ftc.teamcode.hardware.subsystems.DriveTrain;
 import org.firstinspires.ftc.teamcode.hardware.subsystems.DriveTrainController;
+import org.firstinspires.ftc.teamcode.hardware.subsystems.joystickMappings.CosMapping;
 import org.firstinspires.ftc.teamcode.libs.util.TelemetryContainer;
 
 public class AutonomousDriveForward {
@@ -23,7 +25,8 @@ public class AutonomousDriveForward {
                 false
         ),
                 Constants.TEAM1_DRIVETRAIN_COUNTS_PER_RADIAN,
-                Constants.TEAM1_DRIVETRAIN_COUNTS_PER_METER
+                Constants.TEAM1_DRIVETRAIN_COUNTS_PER_METER,
+                new CosMapping()
         );
         Telemetry telemetry = TelemetryContainer.getTelemetry();
 

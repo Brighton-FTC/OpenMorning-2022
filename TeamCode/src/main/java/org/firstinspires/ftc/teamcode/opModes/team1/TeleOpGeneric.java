@@ -10,6 +10,7 @@ import org.firstinspires.ftc.teamcode.hardware.subsystems.DriveTrain;
 import org.firstinspires.ftc.teamcode.hardware.subsystems.DriveTrainController;
 import org.firstinspires.ftc.teamcode.hardware.subsystems.FlipsOverArm;
 import org.firstinspires.ftc.teamcode.hardware.subsystems.ServoIntake;
+import org.firstinspires.ftc.teamcode.hardware.subsystems.joystickMappings.CosMapping;
 import org.firstinspires.ftc.teamcode.inputs.GamepadButton;
 import org.firstinspires.ftc.teamcode.inputs.Inputs;
 import org.firstinspires.ftc.teamcode.inputs.XY;
@@ -33,7 +34,8 @@ abstract class TeleOpGeneric extends OpModeWrapper {
                 false
         ),
                 Constants.TEAM1_DRIVETRAIN_COUNTS_PER_RADIAN,
-                Constants.TEAM1_DRIVETRAIN_COUNTS_PER_METER
+                Constants.TEAM1_DRIVETRAIN_COUNTS_PER_METER,
+                new CosMapping()
         );
         arm = new FlipsOverArm(
                 hardwareMap.get(DcMotor.class, "arm"),
@@ -67,6 +69,7 @@ abstract class TeleOpGeneric extends OpModeWrapper {
         } else if(Inputs.isPressed(GamepadButton.D_DOWN)) {
             intakeSpeed = -1.0;
         }
+        telemetry.addData("Intake speed", intakeSpeed);
         intake.spin(intakeSpeed);
 
         /* Arm */

@@ -4,31 +4,31 @@ import static java.lang.Thread.sleep;
 
 import com.qualcomm.robotcore.hardware.DcMotor;
 
+import org.firstinspires.ftc.teamcode.hardware.subsystems.joystickMappings.JoystickMapping;
+
 public class DriveTrainController {
     public final DriveTrain driveTrain;
     private final double countsPerRadian;
     private final double countPerMeter;
     private DriveTrainState driveTrainState;
+    private JoystickMapping mapping;
 
-    public DriveTrainController(DriveTrain driveTrain, double countsPerRadian, double countPerMeter){
+    public DriveTrainController(DriveTrain driveTrain, double countsPerRadian, double countPerMeter, JoystickMapping mapping){
         this.driveTrain = driveTrain;
         this.countsPerRadian = countsPerRadian;
         this.countPerMeter = countPerMeter;
-        driveTrainState = DriveTrainState.DRIVER_CONTROLLED;
+        this.driveTrainState = DriveTrainState.DRIVER_CONTROLLED;
+        this.mapping = mapping;
     }
 
     public void drive_scaled(double speed, double turn) {
         driveTrainState = DriveTrainState.DRIVER_CONTROLLED;
 
         // scale from -1 to 1
-        speed = scale(speed);
-        turn = scale(turn);
+        speed = mapping.mapSpeed(speed);
+        turn = mapping.mapTurning(turn);
 
         driveTrain.arcadeDriveScale(speed, turn);
-    }
-
-    private static double scale(double value) {
-        return Math.signum(value) * 0.5 * (1.0 - Math.cos(value * Math.PI));
     }
 
     public boolean isBusy(){

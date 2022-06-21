@@ -3,12 +3,14 @@ package org.firstinspires.ftc.teamcode.opModes.team2;
 import com.qualcomm.robotcore.hardware.CRServo;
 import com.qualcomm.robotcore.hardware.DcMotor;
 
+import org.checkerframework.checker.units.qual.C;
 import org.firstinspires.ftc.teamcode.Constants;
 import org.firstinspires.ftc.teamcode.hardware.subsystems.CarouselSpinner;
 import org.firstinspires.ftc.teamcode.hardware.subsystems.DriveTrain;
 import org.firstinspires.ftc.teamcode.hardware.subsystems.DriveTrainController;
 import org.firstinspires.ftc.teamcode.hardware.subsystems.FlipsOverArm;
 import org.firstinspires.ftc.teamcode.hardware.subsystems.ServoIntake;
+import org.firstinspires.ftc.teamcode.hardware.subsystems.joystickMappings.CosMapping;
 import org.firstinspires.ftc.teamcode.inputs.GamepadButton;
 import org.firstinspires.ftc.teamcode.inputs.Inputs;
 import org.firstinspires.ftc.teamcode.inputs.XY;
@@ -34,7 +36,8 @@ abstract class TeleOpGeneric extends OpModeWrapper {
                 false
         ),
                 Constants.TEAM2_DRIVETRAIN_COUNTS_PER_RADIAN,
-                Constants.TEAM2_DRIVETRAIN_COUNTS_PER_METER
+                Constants.TEAM2_DRIVETRAIN_COUNTS_PER_METER,
+                new CosMapping()
         );
         arm = new FlipsOverArm(
                 hardwareMap.get(DcMotor.class, "slide"),
@@ -77,7 +80,7 @@ abstract class TeleOpGeneric extends OpModeWrapper {
         /* Drivetrain */
         // CONTROLS: Left joystick
         XY leftJoystick = Inputs.getLeftJoystickData();
-        driveTrain.drive_scaled(-leftJoystick.y, leftJoystick.x);
+        driveTrain.drive_scaled(-leftJoystick.y, -leftJoystick.x);
 
         telemetry.update();
     }
