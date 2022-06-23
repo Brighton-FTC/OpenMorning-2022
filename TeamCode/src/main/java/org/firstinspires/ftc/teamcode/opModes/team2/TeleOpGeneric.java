@@ -3,12 +3,11 @@ package org.firstinspires.ftc.teamcode.opModes.team2;
 import com.qualcomm.robotcore.hardware.CRServo;
 import com.qualcomm.robotcore.hardware.DcMotor;
 
-import org.checkerframework.checker.units.qual.C;
 import org.firstinspires.ftc.teamcode.Constants;
 import org.firstinspires.ftc.teamcode.hardware.subsystems.CarouselSpinner;
 import org.firstinspires.ftc.teamcode.hardware.subsystems.DriveTrain;
 import org.firstinspires.ftc.teamcode.hardware.subsystems.DriveTrainController;
-import org.firstinspires.ftc.teamcode.hardware.subsystems.FlipsOverArm;
+import org.firstinspires.ftc.teamcode.hardware.subsystems.DiscretePositionArm;
 import org.firstinspires.ftc.teamcode.hardware.subsystems.ServoIntake;
 import org.firstinspires.ftc.teamcode.hardware.subsystems.joystickMappings.CosMapping;
 import org.firstinspires.ftc.teamcode.inputs.GamepadButton;
@@ -21,7 +20,7 @@ abstract class TeleOpGeneric extends OpModeWrapper {
 
     private DriveTrainController driveTrain;
     private CarouselSpinner spinner;
-    private FlipsOverArm arm;
+    private DiscretePositionArm arm;
     private ServoIntake intake;
     private ToggleableButton isArmRaisedButton;
     private ToggleableButton intakeModeToggle;
@@ -39,12 +38,13 @@ abstract class TeleOpGeneric extends OpModeWrapper {
                 Constants.TEAM2_DRIVETRAIN_COUNTS_PER_METER,
                 new CosMapping()
         );
-        arm = new FlipsOverArm(
+        arm = new DiscretePositionArm(
                 hardwareMap.get(DcMotor.class, "slide"),
                 false,
                 Constants.TEAM2_SLIDE_FRONT_COUNTS,
                 Constants.TEAM2_SLIDE_BACK_COUNTS
         );
+//        arm.setPower(0.5);
         intake = new ServoIntake(hardwareMap.get(CRServo.class, "intake"), true);
     }
 
@@ -66,7 +66,8 @@ abstract class TeleOpGeneric extends OpModeWrapper {
         /* Intake servo*/
         // CONTROLS: use the direction pad up/down
 
-        if (intakeModeToggle.processTick()) {
+        boolean isIntakeMode = intakeModeToggle.processTick();
+        if (isIntakeMode) {
             intake.spin(Constants.TEAM2_INTAKE_SPEED);
             arm.powerDown();
         }
@@ -77,10 +78,13 @@ abstract class TeleOpGeneric extends OpModeWrapper {
             else arm.moveToFront(Constants.TEAM2_SLIDE_SPEED);
         }
 
+        double speedMultiplier = isIntakeMode ? 0.5 : 1.0;
+        double turnMultiplier = isIntakeMode ? 0.5 : 1.0;
+
         /* Drivetrain */
         // CONTROLS: Left joystick
         XY leftJoystick = Inputs.getLeftJoystickData();
-        driveTrain.drive_scaled(-leftJoystick.y, -leftJoystick.x);
+        driveTrain.drive_scaled(-leftJoystick.y * speedMultiplier, -leftJoystick.x * turnMultiplier);
 
         telemetry.update();
     }

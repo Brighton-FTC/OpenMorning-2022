@@ -7,7 +7,7 @@ import com.qualcomm.robotcore.hardware.DcMotorSimple;
  * Team 1's arm which flips over the back of the robot to deliver freight
  * NOTE: The arm should start resting on the floor as all angles are relative to this.
  */
-public class FlipsOverArm { // TODO: Name this something better
+public class DiscretePositionArm { // TODO: Name this something better
     int frontCounts;
     int backCounts;
     /**
@@ -23,7 +23,7 @@ public class FlipsOverArm { // TODO: Name this something better
      * @param frontCounts (rad) The counts relative to the starting angle of where to keep the arm when *not* flipped
      * @param backCounts (rad) The counts relative to the starting angle of where to keep the arm when *flipped*
      */
-    public FlipsOverArm(DcMotor motor, boolean isReversed, int frontCounts, int backCounts) {
+    public DiscretePositionArm(DcMotor motor, boolean isReversed, int frontCounts, int backCounts) {
         this.motor = motor;
         this.frontCounts = frontCounts;
         this.backCounts = backCounts;
@@ -31,6 +31,10 @@ public class FlipsOverArm { // TODO: Name this something better
         if(isReversed) motor.setDirection(DcMotorSimple.Direction.REVERSE);
         this.motor.setMode(DcMotor.RunMode.STOP_AND_RESET_ENCODER);
         this.motor.setMode(DcMotor.RunMode.RUN_WITHOUT_ENCODER);
+    }
+
+    public void setPower(double power) {
+        this.motor.setPower(power);
     }
 
     public void powerDown() {

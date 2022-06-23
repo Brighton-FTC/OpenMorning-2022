@@ -29,7 +29,7 @@ public class Constants {
 
     // T2 - arm
     public static final int TEAM2_SLIDE_FRONT_COUNTS = 50;
-    public static final int TEAM2_SLIDE_BACK_COUNTS = 200;
+    public static final int TEAM2_SLIDE_BACK_COUNTS = 176;
     public static final double TEAM2_SLIDE_SPEED = 0.5;
 
     // T2 - intake

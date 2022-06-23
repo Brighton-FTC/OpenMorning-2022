@@ -1,6 +1,5 @@
 package org.firstinspires.ftc.teamcode.opModes.team1;
 
-import com.qualcomm.robotcore.eventloop.opmode.TeleOp;
 import com.qualcomm.robotcore.hardware.CRServo;
 import com.qualcomm.robotcore.hardware.DcMotor;
 
@@ -8,7 +7,7 @@ import org.firstinspires.ftc.teamcode.Constants;
 import org.firstinspires.ftc.teamcode.hardware.subsystems.CarouselSpinner;
 import org.firstinspires.ftc.teamcode.hardware.subsystems.DriveTrain;
 import org.firstinspires.ftc.teamcode.hardware.subsystems.DriveTrainController;
-import org.firstinspires.ftc.teamcode.hardware.subsystems.FlipsOverArm;
+import org.firstinspires.ftc.teamcode.hardware.subsystems.DiscretePositionArm;
 import org.firstinspires.ftc.teamcode.hardware.subsystems.ServoIntake;
 import org.firstinspires.ftc.teamcode.hardware.subsystems.joystickMappings.CosMapping;
 import org.firstinspires.ftc.teamcode.inputs.GamepadButton;
@@ -21,7 +20,7 @@ abstract class TeleOpGeneric extends OpModeWrapper {
 
     private DriveTrainController driveTrain;
     private CarouselSpinner spinner;
-    private FlipsOverArm arm;
+    private DiscretePositionArm arm;
     private ServoIntake intake;
     private ToggleableButton isArmRaisedButton;
 
@@ -37,7 +36,7 @@ abstract class TeleOpGeneric extends OpModeWrapper {
                 Constants.TEAM1_DRIVETRAIN_COUNTS_PER_METER,
                 new CosMapping()
         );
-        arm = new FlipsOverArm(
+        arm = new DiscretePositionArm(
                 hardwareMap.get(DcMotor.class, "arm"),
                 false,
                 Constants.TEAM1_ARM_FRONT_COUNTS,
