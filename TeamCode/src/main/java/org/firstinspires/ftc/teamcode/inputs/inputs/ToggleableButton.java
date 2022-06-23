@@ -15,4 +15,8 @@ public class ToggleableButton {
         if (button.processTick()) state = !state;
         return state;
     }
+
+    public void set(boolean newState){
+        this.state = newState;
+    }
 }

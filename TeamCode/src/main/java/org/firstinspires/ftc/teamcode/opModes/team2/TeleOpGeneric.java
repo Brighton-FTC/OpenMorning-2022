@@ -13,6 +13,7 @@ import org.firstinspires.ftc.teamcode.hardware.subsystems.joystickMappings.CosMa
 import org.firstinspires.ftc.teamcode.inputs.GamepadButton;
 import org.firstinspires.ftc.teamcode.inputs.Inputs;
 import org.firstinspires.ftc.teamcode.inputs.XY;
+import org.firstinspires.ftc.teamcode.inputs.inputs.DebouncedButton;
 import org.firstinspires.ftc.teamcode.inputs.inputs.ToggleableButton;
 import org.firstinspires.ftc.teamcode.wrappers.OpModeWrapper;
 
@@ -22,12 +23,17 @@ abstract class TeleOpGeneric extends OpModeWrapper {
     private CarouselSpinner spinner;
     private DiscretePositionArm arm;
     private ServoIntake intake;
-    private ToggleableButton isArmRaisedButton;
-    private ToggleableButton intakeModeToggle;
+    
+    DebouncedButton raiseArmButton;
+    DebouncedButton floatArmButton;
+    DebouncedButton powerDownArmButton;
+    ToggleableButton isIntakeEnabledButton;
 
     public void custom_setup() {
-        isArmRaisedButton = new ToggleableButton(GamepadButton.CROSS, false);
-        intakeModeToggle = new ToggleableButton(GamepadButton.SQUARE, false);
+        raiseArmButton = new DebouncedButton(GamepadButton.TRIANGLE);
+        floatArmButton = new DebouncedButton(GamepadButton.CIRCLE);
+        powerDownArmButton = new DebouncedButton(GamepadButton.CROSS);
+        isIntakeEnabledButton = new ToggleableButton(GamepadButton.SQUARE, false);
         spinner = new CarouselSpinner(hardwareMap.get(DcMotor.class, "carousel_spinner"), false);
         driveTrain = new DriveTrainController(new DriveTrain(
                 hardwareMap.get(DcMotor.class, "left_drivetrain_motor"),
@@ -66,20 +72,24 @@ abstract class TeleOpGeneric extends OpModeWrapper {
         /* Intake servo*/
         // CONTROLS: use the direction pad up/down
 
-        boolean isIntakeMode = intakeModeToggle.processTick();
-        if (isIntakeMode) {
-            intake.spin(Constants.TEAM2_INTAKE_SPEED);
-            arm.powerDown();
+        if(raiseArmButton.processTick()) {
+            arm.moveToBack(Constants.TEAM2_SLIDE_SPEED);
+            isIntakeEnabledButton.set(false);
         }
-        else {
-            intake.spin(0.0);
-            // Toggle arm position
-            if(isArmRaisedButton.processTick()) arm.moveToBack(Constants.TEAM2_SLIDE_SPEED);
-            else arm.moveToFront(Constants.TEAM2_SLIDE_SPEED);
+        if(floatArmButton.processTick()) arm.moveToFront(Constants.TEAM2_SLIDE_SPEED);
+        if(powerDownArmButton.processTick()) {
+            arm.powerDown();
+            isIntakeEnabledButton.set(true);
         }
 
-        double speedMultiplier = isIntakeMode ? 0.5 : 1.0;
-        double turnMultiplier = isIntakeMode ? 0.5 : 1.0;
+        if (isIntakeEnabledButton.processTick()) intake.spin(Constants.TEAM2_INTAKE_SPEED);
+        else intake.spin(0.0);
+
+        // if arm powered down, slow down for more control
+        boolean isArmPoweredDown = arm.getPower() == 0;
+
+        double speedMultiplier = isArmPoweredDown ? 0.5 : 1.0;
+        double turnMultiplier = isArmPoweredDown ? 0.5 : 1.0;
 
         /* Drivetrain */
         // CONTROLS: Left joystick

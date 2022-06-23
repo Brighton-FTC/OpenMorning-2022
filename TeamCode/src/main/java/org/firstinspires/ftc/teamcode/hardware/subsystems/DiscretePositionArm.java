@@ -37,6 +37,10 @@ public class DiscretePositionArm { // TODO: Name this something better
         this.motor.setPower(power);
     }
 
+    public double getPower(){
+        return this.motor.getPower();
+    }
+
     public void powerDown() {
         this.motor.setPower(0);
     }
