@@ -21,6 +21,7 @@ public class Constants {
     public static final int TEAM1_ARM_FRONT_COUNTS = 50;
     public static final int TEAM1_ARM_BACK_COUNTS = 550;
     public static final double TEAM1_ARM_SPEED = 0.5;
+    public static final int TEAM1_ARM_POSITION_EPSILON = 5;
 
     // TODO: change
     // T2 - drivetrain
@@ -31,6 +32,10 @@ public class Constants {
     public static final int TEAM2_SLIDE_FRONT_COUNTS = 50;
     public static final int TEAM2_SLIDE_BACK_COUNTS = 176;
     public static final double TEAM2_SLIDE_SPEED = 0.5;
+
+    // T1 - grabber
+    public static final double TEAM1_GRABBER_CLOSED_POS = 0.0;
+    public static final double TEAM1_GRABBER_OPEN_POS = 0.2;
 
     // T2 - intake
     public static final double TEAM2_INTAKE_SPEED = 1.0;

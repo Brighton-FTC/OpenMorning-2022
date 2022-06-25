@@ -1,18 +1,23 @@
 package org.firstinspires.ftc.teamcode.opModes.team1;
 
+import static org.firstinspires.ftc.teamcode.Constants.TEAM1_ARM_POSITION_EPSILON;
+
 import com.qualcomm.robotcore.hardware.CRServo;
 import com.qualcomm.robotcore.hardware.DcMotor;
+import com.qualcomm.robotcore.hardware.Servo;
 
 import org.firstinspires.ftc.teamcode.Constants;
 import org.firstinspires.ftc.teamcode.hardware.subsystems.CarouselSpinner;
 import org.firstinspires.ftc.teamcode.hardware.subsystems.DriveTrain;
 import org.firstinspires.ftc.teamcode.hardware.subsystems.DriveTrainController;
 import org.firstinspires.ftc.teamcode.hardware.subsystems.DiscretePositionArm;
+import org.firstinspires.ftc.teamcode.hardware.subsystems.ServoGrabber;
 import org.firstinspires.ftc.teamcode.hardware.subsystems.ServoIntake;
 import org.firstinspires.ftc.teamcode.hardware.subsystems.joystickMappings.CosMapping;
 import org.firstinspires.ftc.teamcode.inputs.GamepadButton;
 import org.firstinspires.ftc.teamcode.inputs.Inputs;
 import org.firstinspires.ftc.teamcode.inputs.XY;
+import org.firstinspires.ftc.teamcode.inputs.inputs.DebouncedButton;
 import org.firstinspires.ftc.teamcode.inputs.inputs.ToggleableButton;
 import org.firstinspires.ftc.teamcode.wrappers.OpModeWrapper;
 
@@ -21,11 +26,18 @@ abstract class TeleOpGeneric extends OpModeWrapper {
     private DriveTrainController driveTrain;
     private CarouselSpinner spinner;
     private DiscretePositionArm arm;
-    private ServoIntake intake;
-    private ToggleableButton isArmRaisedButton;
+    private ServoGrabber grabber;
+
+    Team1ArmState armState = Team1ArmState.FLOATING;
+
+    DebouncedButton raiseArmButton;
+    DebouncedButton floatArmButton;
+    DebouncedButton powerDownArmButton;
 
     public void custom_setup() {
-        isArmRaisedButton = new ToggleableButton(GamepadButton.CROSS, false);
+        raiseArmButton = new DebouncedButton(GamepadButton.TRIANGLE);
+        floatArmButton = new DebouncedButton(GamepadButton.CIRCLE);
+        powerDownArmButton = new DebouncedButton(GamepadButton.CROSS);
         spinner = new CarouselSpinner(hardwareMap.get(DcMotor.class, "carousel_spinner"), false);
         driveTrain = new DriveTrainController(new DriveTrain(
                 hardwareMap.get(DcMotor.class, "left_drivetrain_motor"),
@@ -42,7 +54,8 @@ abstract class TeleOpGeneric extends OpModeWrapper {
                 Constants.TEAM1_ARM_FRONT_COUNTS,
                 Constants.TEAM1_ARM_BACK_COUNTS
         );
-        intake = new ServoIntake(hardwareMap.get(CRServo.class, "intake"), false);
+//        arm.setPower(0.5);
+        grabber = new ServoGrabber(hardwareMap.get(Servo.class, "grabber"), Constants.TEAM1_GRABBER_CLOSED_POS, Constants.TEAM1_GRABBER_OPEN_POS);
     }
 
     /**
@@ -62,24 +75,36 @@ abstract class TeleOpGeneric extends OpModeWrapper {
 
         /* Intake servo*/
         // CONTROLS: use the direction pad up/down
-        double intakeSpeed = 0.0;
-        if(Inputs.isPressed(GamepadButton.D_UP)) {
-            intakeSpeed = 1.0;
-        } else if(Inputs.isPressed(GamepadButton.D_DOWN)) {
-            intakeSpeed = -1.0;
-        }
-        telemetry.addData("Intake speed", intakeSpeed);
-        intake.spin(intakeSpeed);
 
-        /* Arm */
-        // CONTROLS: Cross to toggle
-        if(isArmRaisedButton.processTick()) arm.moveToBack(Constants.TEAM1_ARM_SPEED);
-        else arm.moveToFront(Constants.TEAM1_ARM_SPEED);
+        if(raiseArmButton.processTick()) armState = Team1ArmState.FLIPPED;
+        if(floatArmButton.processTick()) armState = Team1ArmState.FLOATING;
+        if(powerDownArmButton.processTick()) armState = Team1ArmState.ON_GROUND;
+
+        switch (armState){
+            case FLIPPED:
+                arm.moveToBack(Constants.TEAM1_ARM_SPEED);
+                break;
+            case FLOATING:
+                arm.moveToFront(Constants.TEAM1_ARM_SPEED);
+                break;
+            case ON_GROUND:
+                arm.moveToCountsAndPowerDown(0, Constants.TEAM1_ARM_SPEED, TEAM1_ARM_POSITION_EPSILON);
+                break;
+        }
+
+        boolean grabberState = Inputs.isPressed(GamepadButton.R_BUMPER);
+        grabber.setClosed(grabberState);
+
+        // if arm powered down, slow down for more control
+        boolean isArmPoweredDown = arm.getPower() == 0;
+
+        double speedMultiplier = isArmPoweredDown ? 0.5 : 1.0;
+        double turnMultiplier = isArmPoweredDown ? 0.5 : 1.0;
 
         /* Drivetrain */
         // CONTROLS: Left joystick
         XY leftJoystick = Inputs.getLeftJoystickData();
-        driveTrain.drive_scaled(-leftJoystick.y, leftJoystick.x);
+        driveTrain.drive_scaled(-leftJoystick.y * speedMultiplier, -leftJoystick.x * turnMultiplier);
 
         telemetry.update();
     }

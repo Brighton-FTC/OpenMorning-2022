@@ -3,6 +3,9 @@ package org.firstinspires.ftc.teamcode.hardware.subsystems;
 import com.qualcomm.robotcore.hardware.DcMotor;
 import com.qualcomm.robotcore.hardware.DcMotorSimple;
 
+import org.firstinspires.ftc.robotcore.external.Telemetry;
+import org.firstinspires.ftc.teamcode.libs.util.TelemetryContainer;
+
 /**
  * Team 1's arm which flips over the back of the robot to deliver freight
  * NOTE: The arm should start resting on the floor as all angles are relative to this.
@@ -33,15 +36,12 @@ public class DiscretePositionArm { // TODO: Name this something better
         this.motor.setMode(DcMotor.RunMode.RUN_WITHOUT_ENCODER);
     }
 
-    public void setPower(double power) {
-        this.motor.setPower(power);
-    }
-
     public double getPower(){
         return this.motor.getPower();
     }
 
     public void powerDown() {
+        this.motor.setZeroPowerBehavior(DcMotor.ZeroPowerBehavior.FLOAT);
         this.motor.setPower(0);
     }
 
@@ -50,8 +50,8 @@ public class DiscretePositionArm { // TODO: Name this something better
      * @param desiredCounts number of encoder counts relative to starting pos
      */
     public void moveToCounts(int desiredCounts, double speed) {
-        this.motor.setPower(speed);
         this.motor.setZeroPowerBehavior(DcMotor.ZeroPowerBehavior.BRAKE);
+        this.motor.setPower(speed);
         this.motor.setTargetPosition(desiredCounts);
         this.motor.setMode(DcMotor.RunMode.RUN_TO_POSITION);
     }
@@ -73,5 +73,25 @@ public class DiscretePositionArm { // TODO: Name this something better
     public void moveToBack(double speed) {
         this.moveToCounts(this.backCounts, speed);
         this.atBack = true;
+    }
+
+    /**
+     * Move the arm to a position. if is is close enough, power it down
+     * @param desiredCounts desired position in counts
+     * @param speed speed of the arm
+     * @param epsilon maximal deviation for the arm to be powered down
+     */
+    public void moveToCountsAndPowerDown(int desiredCounts, double speed, int epsilon){
+        int error = Math.abs(motor.getCurrentPosition() - desiredCounts);
+        Telemetry telemetry = TelemetryContainer.getTelemetry();
+        telemetry.addData("error", error);
+        telemetry.addData("pos", motor.getCurrentPosition());
+        if (error <= epsilon) {
+            this.powerDown();
+            return;
+        }
+
+        // if needed, start moving
+        this.moveToCounts(desiredCounts, speed);
     }
 }

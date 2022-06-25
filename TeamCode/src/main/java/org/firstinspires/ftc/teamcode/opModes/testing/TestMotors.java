@@ -1,8 +1,8 @@
 package org.firstinspires.ftc.teamcode.opModes.testing;
 
 import com.qualcomm.robotcore.eventloop.opmode.TeleOp;
-import com.qualcomm.robotcore.hardware.CRServo;
 import com.qualcomm.robotcore.hardware.DcMotor;
+import com.qualcomm.robotcore.hardware.Servo;
 
 import org.firstinspires.ftc.teamcode.Constants;
 import org.firstinspires.ftc.teamcode.hardware.subsystems.DriveTrain;
@@ -45,7 +45,7 @@ public class TestMotors extends OpModeWrapper {
             "servo_2",
             "servo_3",
     };
-    CRServo[] crServos;
+    Servo[] crServos;
     DcMotor[] motors;
     DebouncedButton[] selectionButtons;
     DebouncedButton resetDrivetrainEncoders;
@@ -60,7 +60,7 @@ public class TestMotors extends OpModeWrapper {
     @Override
     public void setup() {
         motors = new DcMotor[4];
-        crServos = new CRServo[4];
+        crServos = new Servo[4];
 
         resetDrivetrainEncoders = new DebouncedButton(GamepadButton.CIRCLE);
         driveTrainLockHorizontalComponentButton = new ToggleableButton(GamepadButton.CROSS, false);
@@ -82,7 +82,7 @@ public class TestMotors extends OpModeWrapper {
         driveRightLastPos = driveTrain.driveTrain.leftMotor.getCurrentPosition();
 
         for (int i = 0; i < motorNames.length; i++) {
-            crServos[i] = hardwareMap.get(CRServo.class, servoNames[i]);
+            crServos[i] = hardwareMap.get(Servo.class, servoNames[i]);
         }
         for (int i = 0; i < motorNames.length; i++) {
             motors[i] = hardwareMap.get(DcMotor.class, motorNames[i]);
@@ -133,11 +133,13 @@ public class TestMotors extends OpModeWrapper {
 
         double power = Inputs.getRightJoystickData().y;
         if (isSelectingServos) {
-            CRServo servo = crServos[motorId];
+            Servo servo = crServos[motorId];
 
-            servo.setPower(power);
+//            servo.setPower(power);
+            servo.setPosition(power);
 
-            telemetry.addData("Power", power);
+            telemetry.addData("Power/desired pos", power);
+            telemetry.addData("Position", servo.getPosition());
         } else {
             DcMotor motor = motors[motorId];
             motor.setPower(power);
