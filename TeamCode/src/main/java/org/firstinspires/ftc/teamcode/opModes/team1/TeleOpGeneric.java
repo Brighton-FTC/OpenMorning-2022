@@ -56,7 +56,6 @@ abstract class TeleOpGeneric extends OpModeWrapper {
                 Constants.TEAM1_ARM_FRONT_COUNTS,
                 Constants.TEAM1_ARM_BACK_COUNTS
         );
-//        arm.setPower(0.5);
         grabber = new ServoGrabber(hardwareMap.get(Servo.class, "grabber"), Constants.TEAM1_GRABBER_CLOSED_POS, Constants.TEAM1_GRABBER_OPEN_POS);
     }
 

@@ -52,7 +52,6 @@ abstract class TeleOpGeneric extends OpModeWrapper {
                 Constants.TEAM2_SLIDE_FRONT_COUNTS,
                 Constants.TEAM2_SLIDE_BACK_COUNTS
         );
-//        arm.setPower(0.5);
         intake = new ServoIntake(hardwareMap.get(CRServo.class, "intake"), true);
     }
 

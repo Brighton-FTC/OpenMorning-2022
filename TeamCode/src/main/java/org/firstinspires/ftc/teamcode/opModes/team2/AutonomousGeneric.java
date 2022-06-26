@@ -5,8 +5,10 @@ import com.qualcomm.robotcore.hardware.DcMotor;
 import org.checkerframework.checker.units.qual.C;
 import org.firstinspires.ftc.teamcode.Constants;
 import org.firstinspires.ftc.teamcode.hardware.subsystems.DiscretePositionArm;
+import org.firstinspires.ftc.teamcode.opModes.subroutines.autonomous.Deliver;
 import org.firstinspires.ftc.teamcode.opModes.subroutines.autonomous.DriveForwardCounts;
 import org.firstinspires.ftc.teamcode.opModes.subroutines.autonomous.TurnCounts;
+import org.firstinspires.ftc.teamcode.opModes.subroutines.autonomous.team2.Team2Deposit;
 import org.firstinspires.ftc.teamcode.wrappers.LinearOpModeWrapper;
 
 public abstract class AutonomousGeneric extends LinearOpModeWrapper {
@@ -25,6 +27,8 @@ public abstract class AutonomousGeneric extends LinearOpModeWrapper {
 
         new DriveForwardCounts().run(this, 2000, 0.5);
         new TurnCounts().run(this, -420, 0.5);
+        new Deliver().run(this, 1000, 1, isSpinnerReversed);
+        new Team2Deposit().run(this, arm);
     }
 
     public abstract void setup();

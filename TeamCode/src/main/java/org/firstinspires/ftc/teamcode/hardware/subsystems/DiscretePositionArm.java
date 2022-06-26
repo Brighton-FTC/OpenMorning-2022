@@ -94,4 +94,8 @@ public class DiscretePositionArm { // TODO: Name this something better
         // if needed, start moving
         this.moveToCounts(desiredCounts, speed);
     }
+
+    public boolean isBusy(){
+        return this.motor.isBusy();
+    }
 }
