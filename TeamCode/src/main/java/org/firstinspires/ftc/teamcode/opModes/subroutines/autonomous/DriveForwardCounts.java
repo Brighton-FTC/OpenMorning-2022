@@ -1,22 +1,18 @@
-package org.firstinspires.ftc.teamcode.opModes.subroutines;
+package org.firstinspires.ftc.teamcode.opModes.subroutines.autonomous;
 
 import com.qualcomm.robotcore.eventloop.opmode.LinearOpMode;
 import com.qualcomm.robotcore.hardware.DcMotor;
 import com.qualcomm.robotcore.hardware.HardwareMap;
 
-import org.checkerframework.checker.units.qual.C;
 import org.firstinspires.ftc.robotcore.external.Telemetry;
-import org.firstinspires.ftc.teamcode.Constants;
 import org.firstinspires.ftc.teamcode.hardware.subsystems.DriveTrain;
 import org.firstinspires.ftc.teamcode.hardware.subsystems.DriveTrainController;
 import org.firstinspires.ftc.teamcode.hardware.subsystems.joystickMappings.CosMapping;
-import org.firstinspires.ftc.teamcode.hardware.subsystems.joystickMappings.LinearMapping;
 import org.firstinspires.ftc.teamcode.hardware.subsystems.joystickMappings.RootMapping;
 import org.firstinspires.ftc.teamcode.libs.util.TelemetryContainer;
 
-public class AutonomousDriveForward {
-    // TODO: Should we move this to OpModes/subroutines as I think it is not team-specific?
-    public void run(LinearOpMode opMode, double forwardGradient, double forwardIntercept) throws InterruptedException {
+public class DriveForwardCounts {
+    public void run(LinearOpMode opMode, int counts, double speed) throws InterruptedException {
         // Get hardwareMap
         HardwareMap hardwareMap = opMode.hardwareMap;
 
@@ -28,13 +24,10 @@ public class AutonomousDriveForward {
         ),
                 new RootMapping(2),
                 new CosMapping(),
-                forwardGradient,
-                forwardIntercept
+                0,0
         );
-        Telemetry telemetry = TelemetryContainer.getTelemetry();
 
-        driveTrain.startDrivingForward(3, 1);
+        driveTrain.startDrivingCounts(counts, counts, speed);
         driveTrain.waitWhileBusy();
-        telemetry.addData("Subroutine", "completed");
     }
 }

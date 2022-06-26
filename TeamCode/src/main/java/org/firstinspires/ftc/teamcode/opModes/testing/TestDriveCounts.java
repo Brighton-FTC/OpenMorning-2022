@@ -6,9 +6,10 @@ import com.qualcomm.robotcore.hardware.DcMotor;
 import org.firstinspires.ftc.teamcode.Constants;
 import org.firstinspires.ftc.teamcode.hardware.subsystems.DriveTrain;
 import org.firstinspires.ftc.teamcode.hardware.subsystems.DriveTrainController;
-import org.firstinspires.ftc.teamcode.hardware.subsystems.DriveTrainState;
 import org.firstinspires.ftc.teamcode.hardware.subsystems.joystickMappings.CosMapping;
+import org.firstinspires.ftc.teamcode.hardware.subsystems.joystickMappings.RootMapping;
 import org.firstinspires.ftc.teamcode.inputs.GamepadButton;
+import org.firstinspires.ftc.teamcode.inputs.inputs.DebouncedButton;
 import org.firstinspires.ftc.teamcode.inputs.inputs.IncrementButtons;
 import org.firstinspires.ftc.teamcode.inputs.inputs.ToggleableButton;
 import org.firstinspires.ftc.teamcode.wrappers.OpModeWrapper;
@@ -16,25 +17,25 @@ import org.firstinspires.ftc.teamcode.wrappers.OpModeWrapper;
 @TeleOp(name = "Test drive counts", group = "Test")
 public class TestDriveCounts extends OpModeWrapper {
     IncrementButtons numCountsSelector;
-    ToggleableButton driveToggle;
+    DebouncedButton startDriveButton;
     DriveTrainController driveTrain;
-    double SPEED = 0.5;
+    double SPEED = 1.0;
 
     @Override
     public void setup(){
         // Inputs
-        numCountsSelector = new IncrementButtons(GamepadButton.D_UP, GamepadButton.D_DOWN, 100, 10);
-        driveToggle = new ToggleableButton(GamepadButton.TRIANGLE, false);
+        numCountsSelector = new IncrementButtons(GamepadButton.D_UP, GamepadButton.D_DOWN, 1000, 500);
+        startDriveButton = new DebouncedButton(GamepadButton.TRIANGLE);
         // Actuators
         driveTrain = new DriveTrainController(new DriveTrain(
                 hardwareMap.get(DcMotor.class, "motor_0"),
                 hardwareMap.get(DcMotor.class, "motor_1"),
                 false
         ),
-                Constants.TEAM1_DRIVETRAIN_COUNTS_PER_RADIAN,
-                Constants.TEAM1_DRIVETRAIN_COUNTS_PER_METER,
+                new RootMapping(2),
                 new CosMapping(),
-                new CosMapping()
+    0.0,
+    0.0
         );
     }
 
@@ -42,12 +43,9 @@ public class TestDriveCounts extends OpModeWrapper {
     public void loop() {
         // Get inputs
         int numCounts = (int) numCountsSelector.processTick();
-        boolean isDriving = driveToggle.processTick();
+        boolean isDriving = startDriveButton.processTick();
 
         if(isDriving) {
-            // Display if driving
-            telemetry.addLine("Driving");
-            telemetry.update();
             // Drive
             driveTrain.startDrivingCounts(numCounts, numCounts, SPEED);
         } else {
@@ -55,7 +53,8 @@ public class TestDriveCounts extends OpModeWrapper {
             telemetry.addData("Number of counts to drive", numCounts);
             telemetry.addLine("Use the DPAD Up/Down to change num counts");
             telemetry.addLine("Triangle to drive");
-            telemetry.update();
         }
+        telemetry.addData("IsBusy", driveTrain.isBusy());
+        telemetry.update();
     }
 }

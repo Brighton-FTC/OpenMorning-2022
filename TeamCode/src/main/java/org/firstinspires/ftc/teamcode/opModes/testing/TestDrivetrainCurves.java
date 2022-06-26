@@ -40,10 +40,10 @@ public class TestDrivetrainCurves extends OpModeWrapper {
                 hardwareMap.get(DcMotor.class, "motor_1"),
                 false
         ),
-                Constants.TEAM1_DRIVETRAIN_COUNTS_PER_RADIAN,
-                Constants.TEAM1_DRIVETRAIN_COUNTS_PER_METER,
-                new LinearMapping(),
-                new LinearMapping()
+                 new RootMapping(2),
+                 new CosMapping(),
+                 0.0,
+                 0.0
         );
     }
 

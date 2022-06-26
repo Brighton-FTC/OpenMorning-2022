@@ -8,6 +8,7 @@ import org.firstinspires.ftc.teamcode.Constants;
 import org.firstinspires.ftc.teamcode.hardware.subsystems.DriveTrain;
 import org.firstinspires.ftc.teamcode.hardware.subsystems.DriveTrainController;
 import org.firstinspires.ftc.teamcode.hardware.subsystems.joystickMappings.CosMapping;
+import org.firstinspires.ftc.teamcode.hardware.subsystems.joystickMappings.RootMapping;
 import org.firstinspires.ftc.teamcode.inputs.GamepadButton;
 import org.firstinspires.ftc.teamcode.inputs.Inputs;
 import org.firstinspires.ftc.teamcode.inputs.XY;
@@ -73,10 +74,10 @@ public class TestMotors extends OpModeWrapper {
                 hardwareMap.get(DcMotor.class, motorNames[1]),
                 false
         ),
-                Constants.TEAM1_DRIVETRAIN_COUNTS_PER_RADIAN,
-                Constants.TEAM1_DRIVETRAIN_COUNTS_PER_METER,
+                new RootMapping(2),
                 new CosMapping(),
-                new CosMapping()
+                0.0,
+                0.0
         );
         // Number of counts since start
         driveLeftLastPos = driveTrain.driveTrain.leftMotor.getCurrentPosition();

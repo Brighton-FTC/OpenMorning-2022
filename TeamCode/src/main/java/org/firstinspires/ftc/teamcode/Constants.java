@@ -28,6 +28,9 @@ public class Constants {
     public static final double TEAM2_DRIVETRAIN_COUNTS_PER_RADIAN = 30;
     public static final double TEAM2_DRIVETRAIN_COUNTS_PER_METER = 30;
 
+    public static final double TEAM2_DRIVETRAIN_FORWARDS_GRADIENT = 1380;
+    public static final double TEAM2_DRIVETRAIN_FORWARDS_INTERCEPT = 55.4;
+
     // T2 - arm
     public static final int TEAM2_SLIDE_FRONT_COUNTS = 50;
     public static final int TEAM2_SLIDE_BACK_COUNTS = 176;

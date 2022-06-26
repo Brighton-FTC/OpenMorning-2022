@@ -10,6 +10,7 @@ import org.firstinspires.ftc.teamcode.hardware.subsystems.DriveTrainController;
 import org.firstinspires.ftc.teamcode.hardware.subsystems.DiscretePositionArm;
 import org.firstinspires.ftc.teamcode.hardware.subsystems.ServoIntake;
 import org.firstinspires.ftc.teamcode.hardware.subsystems.joystickMappings.CosMapping;
+import org.firstinspires.ftc.teamcode.hardware.subsystems.joystickMappings.RootMapping;
 import org.firstinspires.ftc.teamcode.inputs.GamepadButton;
 import org.firstinspires.ftc.teamcode.inputs.Inputs;
 import org.firstinspires.ftc.teamcode.inputs.XY;
@@ -40,10 +41,10 @@ abstract class TeleOpGeneric extends OpModeWrapper {
                 hardwareMap.get(DcMotor.class, "right_drivetrain_motor"),
                 false
         ),
-                Constants.TEAM2_DRIVETRAIN_COUNTS_PER_RADIAN,
-                Constants.TEAM2_DRIVETRAIN_COUNTS_PER_METER,
+                new RootMapping(2),
                 new CosMapping(),
-                new CosMapping()
+                Constants.TEAM2_DRIVETRAIN_FORWARDS_GRADIENT,
+                Constants.TEAM2_DRIVETRAIN_FORWARDS_INTERCEPT
         );
         arm = new DiscretePositionArm(
                 hardwareMap.get(DcMotor.class, "slide"),
@@ -89,13 +90,12 @@ abstract class TeleOpGeneric extends OpModeWrapper {
         // if arm powered down, slow down for more control
         boolean isArmPoweredDown = arm.getPower() == 0;
 
-        double speedMultiplier = isArmPoweredDown ? 0.5 : 1.0;
-        double turnMultiplier = isArmPoweredDown ? 0.5 : 1.0;
+        double scale = isArmPoweredDown ? 0.5 : 1.0;
 
         /* Drivetrain */
         // CONTROLS: Left joystick
         XY leftJoystick = Inputs.getLeftJoystickData();
-        driveTrain.drive_scaled(-leftJoystick.y * speedMultiplier, -leftJoystick.x * turnMultiplier);
+        driveTrain.drive_scaled(-leftJoystick.y, -leftJoystick.x, scale);
 
         telemetry.update();
     }

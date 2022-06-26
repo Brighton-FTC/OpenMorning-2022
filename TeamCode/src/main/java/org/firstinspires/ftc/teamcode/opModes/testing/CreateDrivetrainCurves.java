@@ -9,6 +9,7 @@ import org.firstinspires.ftc.teamcode.hardware.subsystems.DriveTrain;
 import org.firstinspires.ftc.teamcode.hardware.subsystems.DriveTrainController;
 import org.firstinspires.ftc.teamcode.hardware.subsystems.joystickMappings.CosMapping;
 import org.firstinspires.ftc.teamcode.hardware.subsystems.joystickMappings.LinearMapping;
+import org.firstinspires.ftc.teamcode.hardware.subsystems.joystickMappings.RootMapping;
 import org.firstinspires.ftc.teamcode.inputs.GamepadButton;
 import org.firstinspires.ftc.teamcode.inputs.Inputs;
 import org.firstinspires.ftc.teamcode.inputs.XY;
@@ -34,10 +35,10 @@ public class CreateDrivetrainCurves extends OpModeWrapper {
                 hardwareMap.get(DcMotor.class, "motor_1"),
                 false
         ),
-                Constants.TEAM1_DRIVETRAIN_COUNTS_PER_RADIAN,
-                Constants.TEAM1_DRIVETRAIN_COUNTS_PER_METER,
-                new LinearMapping(),
-                new LinearMapping()
+                new RootMapping(2),
+                new CosMapping(),
+                0.0,
+                0.0
         );
         freezeReadings = new DebouncedButton(GamepadButton.R_BUMPER);
     }

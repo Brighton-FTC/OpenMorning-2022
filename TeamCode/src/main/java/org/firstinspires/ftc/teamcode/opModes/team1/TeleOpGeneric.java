@@ -2,18 +2,17 @@ package org.firstinspires.ftc.teamcode.opModes.team1;
 
 import static org.firstinspires.ftc.teamcode.Constants.TEAM1_ARM_POSITION_EPSILON;
 
-import com.qualcomm.robotcore.hardware.CRServo;
 import com.qualcomm.robotcore.hardware.DcMotor;
 import com.qualcomm.robotcore.hardware.Servo;
 
 import org.firstinspires.ftc.teamcode.Constants;
 import org.firstinspires.ftc.teamcode.hardware.subsystems.CarouselSpinner;
+import org.firstinspires.ftc.teamcode.hardware.subsystems.DiscretePositionArm;
 import org.firstinspires.ftc.teamcode.hardware.subsystems.DriveTrain;
 import org.firstinspires.ftc.teamcode.hardware.subsystems.DriveTrainController;
-import org.firstinspires.ftc.teamcode.hardware.subsystems.DiscretePositionArm;
 import org.firstinspires.ftc.teamcode.hardware.subsystems.ServoGrabber;
-import org.firstinspires.ftc.teamcode.hardware.subsystems.ServoIntake;
 import org.firstinspires.ftc.teamcode.hardware.subsystems.joystickMappings.CosMapping;
+import org.firstinspires.ftc.teamcode.hardware.subsystems.joystickMappings.RootMapping;
 import org.firstinspires.ftc.teamcode.inputs.GamepadButton;
 import org.firstinspires.ftc.teamcode.inputs.Inputs;
 import org.firstinspires.ftc.teamcode.inputs.XY;
@@ -46,10 +45,10 @@ abstract class TeleOpGeneric extends OpModeWrapper {
                 hardwareMap.get(DcMotor.class, "right_drivetrain_motor"),
                 false
         ),
-                Constants.TEAM1_DRIVETRAIN_COUNTS_PER_RADIAN,
-                Constants.TEAM1_DRIVETRAIN_COUNTS_PER_METER,
+                new RootMapping(2),
                 new CosMapping(),
-                new CosMapping()
+                0.0,
+                0.0
         );
         arm = new DiscretePositionArm(
                 hardwareMap.get(DcMotor.class, "arm"),
@@ -79,11 +78,11 @@ abstract class TeleOpGeneric extends OpModeWrapper {
         /* Intake servo*/
         // CONTROLS: use the direction pad up/down
 
-        if(raiseArmButton.processTick()) armState = Team1ArmState.FLIPPED;
-        if(floatArmButton.processTick()) armState = Team1ArmState.FLOATING;
-        if(powerDownArmButton.processTick()) armState = Team1ArmState.ON_GROUND;
+        if (raiseArmButton.processTick()) armState = Team1ArmState.FLIPPED;
+        if (floatArmButton.processTick()) armState = Team1ArmState.FLOATING;
+        if (powerDownArmButton.processTick()) armState = Team1ArmState.ON_GROUND;
 
-        switch (armState){
+        switch (armState) {
             case FLIPPED:
                 arm.moveToBack(Constants.TEAM1_ARM_SPEED);
                 break;
@@ -100,13 +99,12 @@ abstract class TeleOpGeneric extends OpModeWrapper {
         // if arm powered down, slow down for more control
         boolean isArmPoweredDown = armState == Team1ArmState.ON_GROUND;
 
-        double speedMultiplier = isArmPoweredDown ? 0.5 : 1.0;
-        double turnMultiplier = isArmPoweredDown ? 0.5 : 1.0;
+        double scale = isArmPoweredDown ? 0.5 : 1.0;
 
         /* Drivetrain */
         // CONTROLS: Left joystick
         XY leftJoystick = Inputs.getLeftJoystickData();
-        driveTrain.drive_scaled(-leftJoystick.y * speedMultiplier, -leftJoystick.x * turnMultiplier);
+        driveTrain.drive_scaled(-leftJoystick.y * scale, -leftJoystick.x, scale);
 
         telemetry.update();
     }

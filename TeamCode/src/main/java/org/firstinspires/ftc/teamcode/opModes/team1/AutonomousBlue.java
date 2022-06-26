@@ -16,7 +16,7 @@ public class AutonomousBlue extends LinearOpModeWrapper {
         waitForStart();
         {
             // RUN
-            new AutonomousDriveForward().run(this);
+            new AutonomousDriveForward().run(this, 0.0, 0.0);
         }
     }
 }
