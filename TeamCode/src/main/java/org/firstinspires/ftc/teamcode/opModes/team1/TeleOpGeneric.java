@@ -18,6 +18,7 @@ import org.firstinspires.ftc.teamcode.inputs.Inputs;
 import org.firstinspires.ftc.teamcode.inputs.XY;
 import org.firstinspires.ftc.teamcode.inputs.inputs.DebouncedButton;
 import org.firstinspires.ftc.teamcode.inputs.inputs.ToggleableButton;
+import org.firstinspires.ftc.teamcode.libs.util.Maths;
 import org.firstinspires.ftc.teamcode.wrappers.OpModeWrapper;
 
 abstract class TeleOpGeneric extends OpModeWrapper {
@@ -43,7 +44,7 @@ abstract class TeleOpGeneric extends OpModeWrapper {
         driveTrain = new DriveTrainController(new DriveTrain(
                 hardwareMap.get(DcMotor.class, "left_drivetrain_motor"),
                 hardwareMap.get(DcMotor.class, "right_drivetrain_motor"),
-                false
+                true
         ),
                 new RootMapping(2),
                 new CosMapping(),
@@ -103,7 +104,12 @@ abstract class TeleOpGeneric extends OpModeWrapper {
         /* Drivetrain */
         // CONTROLS: Left joystick
         XY leftJoystick = Inputs.getLeftJoystickData();
-        driveTrain.drive_scaled(-leftJoystick.y * scale, -leftJoystick.x, scale);
+        XY rightJoystick = Inputs.getRightJoystickData();
+
+        double speed = Maths.clamp(-leftJoystick.y - rightJoystick.y, -1, 1);
+        double turn = Maths.clamp(-leftJoystick.x + rightJoystick.x, -1, 1);
+
+        driveTrain.drive_scaled(speed, turn, scale, 0.75);
 
         telemetry.update();
     }

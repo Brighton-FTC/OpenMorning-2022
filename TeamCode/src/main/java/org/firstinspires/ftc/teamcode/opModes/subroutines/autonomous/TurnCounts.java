@@ -1,5 +1,7 @@
 package org.firstinspires.ftc.teamcode.opModes.subroutines.autonomous;
 
+import static java.lang.Thread.sleep;
+
 import com.qualcomm.robotcore.eventloop.opmode.LinearOpMode;
 import com.qualcomm.robotcore.hardware.DcMotor;
 import com.qualcomm.robotcore.hardware.HardwareMap;
@@ -12,22 +14,14 @@ import org.firstinspires.ftc.teamcode.hardware.subsystems.joystickMappings.RootM
 import org.firstinspires.ftc.teamcode.libs.util.TelemetryContainer;
 
 public class TurnCounts {
-    public void run(LinearOpMode opMode, int counts, double speed) throws InterruptedException {
-        // Get hardwareMap
-        HardwareMap hardwareMap = opMode.hardwareMap;
+    public void run(LinearOpMode opMode, DriveTrainController driveTrain, int counts, double speed) throws InterruptedException {
+        Telemetry telemetry = TelemetryContainer.getTelemetry();
 
-        // BODY
-        DriveTrainController driveTrain = new DriveTrainController(new DriveTrain(
-                hardwareMap.get(DcMotor.class, "left_drivetrain_motor"),
-                hardwareMap.get(DcMotor.class, "right_drivetrain_motor"),
-                false
-        ),
-                new RootMapping(2),
-                new CosMapping(),
-                0,0
-        );
-
+        telemetry.addData("Before Turn - Is drivetrain busy", driveTrain.isBusy());
+        telemetry.update();
         driveTrain.startDrivingCounts(counts, -counts, speed);
-        driveTrain.waitWhileBusy();
+        while (driveTrain.isBusy()) { opMode.sleep(50); }
+        telemetry.addData("Turn - Is drivetrain busy", driveTrain.isBusy());
+        telemetry.update();
     }
 }

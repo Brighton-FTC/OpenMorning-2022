@@ -12,22 +12,10 @@ import org.firstinspires.ftc.teamcode.hardware.subsystems.joystickMappings.RootM
 import org.firstinspires.ftc.teamcode.libs.util.TelemetryContainer;
 
 public class DriveForwardCounts {
-    public void run(LinearOpMode opMode, int counts, double speed) throws InterruptedException {
-        // Get hardwareMap
-        HardwareMap hardwareMap = opMode.hardwareMap;
-
-        // BODY
-        DriveTrainController driveTrain = new DriveTrainController(new DriveTrain(
-                hardwareMap.get(DcMotor.class, "left_drivetrain_motor"),
-                hardwareMap.get(DcMotor.class, "right_drivetrain_motor"),
-                false
-        ),
-                new RootMapping(2),
-                new CosMapping(),
-                0,0
-        );
-
+    public void run(LinearOpMode opMode, DriveTrainController driveTrain, int counts, double speed) throws InterruptedException {
         driveTrain.startDrivingCounts(counts, counts, speed);
-        driveTrain.waitWhileBusy();
+        while (driveTrain.isBusy()) { opMode.sleep(50); }
+        Telemetry telemetry = TelemetryContainer.getTelemetry();
+        telemetry.addData("Drive Forward - Is drivetrain busy", driveTrain.isBusy());
     }
 }

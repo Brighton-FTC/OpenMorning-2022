@@ -2,6 +2,7 @@ package org.firstinspires.ftc.teamcode.opModes.testing;
 
 import com.qualcomm.robotcore.eventloop.opmode.TeleOp;
 import com.qualcomm.robotcore.hardware.DcMotor;
+import com.qualcomm.robotcore.hardware.Servo;
 
 import org.firstinspires.ftc.teamcode.Constants;
 import org.firstinspires.ftc.teamcode.Timer;
@@ -9,6 +10,7 @@ import org.firstinspires.ftc.teamcode.hardware.subsystems.CarouselSpinner;
 import org.firstinspires.ftc.teamcode.hardware.subsystems.DiscretePositionArm;
 import org.firstinspires.ftc.teamcode.hardware.subsystems.DriveTrain;
 import org.firstinspires.ftc.teamcode.hardware.subsystems.DriveTrainController;
+import org.firstinspires.ftc.teamcode.hardware.subsystems.ServoGrabber;
 import org.firstinspires.ftc.teamcode.hardware.subsystems.joystickMappings.CosMapping;
 import org.firstinspires.ftc.teamcode.hardware.subsystems.joystickMappings.RootMapping;
 import org.firstinspires.ftc.teamcode.inputs.GamepadButton;
@@ -16,6 +18,7 @@ import org.firstinspires.ftc.teamcode.inputs.Inputs;
 import org.firstinspires.ftc.teamcode.inputs.XY;
 import org.firstinspires.ftc.teamcode.inputs.inputs.DebouncedButton;
 import org.firstinspires.ftc.teamcode.inputs.inputs.ToggleableButton;
+import org.firstinspires.ftc.teamcode.opModes.subroutines.autonomous.team1.Team1Deposit;
 import org.firstinspires.ftc.teamcode.opModes.subroutines.autonomous.team2.Team2Deposit;
 import org.firstinspires.ftc.teamcode.wrappers.LinearOpModeWrapper;
 import org.firstinspires.ftc.teamcode.wrappers.OpModeWrapper;
@@ -117,7 +120,15 @@ public class PuppeteerTestAutonomous extends LinearOpModeWrapper {
                     break;
                 case DEPOSIT:
                     if (isTeam1){
-
+                        new Team1Deposit().run(this,
+                                new DiscretePositionArm(
+                                        hardwareMap.get(DcMotor.class, "motor_2"),
+                                        false,
+                                        Constants.TEAM1_ARM_FRONT_COUNTS,
+                                        Constants.TEAM1_ARM_BACK_COUNTS
+                                ),
+                                new ServoGrabber(hardwareMap.get(Servo.class, "servo_3"), Constants.TEAM1_GRABBER_CLOSED_POS, Constants.TEAM1_GRABBER_OPEN_POS)
+                        );
                     } else {
                         new Team2Deposit().run(this,
                                 new DiscretePositionArm(

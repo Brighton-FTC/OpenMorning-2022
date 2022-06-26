@@ -38,7 +38,7 @@ public class Constants {
 
     // T1 - grabber
     public static final double TEAM1_GRABBER_CLOSED_POS = 0.0;
-    public static final double TEAM1_GRABBER_OPEN_POS = 0.2;
+    public static final double TEAM1_GRABBER_OPEN_POS = 0.3;
 
     // T2 - intake
     public static final double TEAM2_INTAKE_SPEED = 1.0;

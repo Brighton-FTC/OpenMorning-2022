@@ -1,18 +1,20 @@
-package org.firstinspires.ftc.teamcode.opModes.team2;
+package org.firstinspires.ftc.teamcode.opModes.team1;
 
 import com.qualcomm.robotcore.hardware.DcMotor;
+import com.qualcomm.robotcore.hardware.Servo;
 
-import org.checkerframework.checker.units.qual.C;
 import org.firstinspires.ftc.teamcode.Constants;
 import org.firstinspires.ftc.teamcode.hardware.subsystems.DiscretePositionArm;
 import org.firstinspires.ftc.teamcode.hardware.subsystems.DriveTrain;
 import org.firstinspires.ftc.teamcode.hardware.subsystems.DriveTrainController;
+import org.firstinspires.ftc.teamcode.hardware.subsystems.ServoGrabber;
 import org.firstinspires.ftc.teamcode.hardware.subsystems.joystickMappings.CosMapping;
 import org.firstinspires.ftc.teamcode.hardware.subsystems.joystickMappings.RootMapping;
+import org.firstinspires.ftc.teamcode.opModes.subroutines.AutonomousDriveForward;
 import org.firstinspires.ftc.teamcode.opModes.subroutines.autonomous.Deliver;
 import org.firstinspires.ftc.teamcode.opModes.subroutines.autonomous.DriveForwardCounts;
 import org.firstinspires.ftc.teamcode.opModes.subroutines.autonomous.TurnCounts;
-import org.firstinspires.ftc.teamcode.opModes.subroutines.autonomous.team2.Team2Deposit;
+import org.firstinspires.ftc.teamcode.opModes.subroutines.autonomous.team1.Team1Deposit;
 import org.firstinspires.ftc.teamcode.wrappers.LinearOpModeWrapper;
 
 public abstract class AutonomousGeneric extends LinearOpModeWrapper {
@@ -22,26 +24,28 @@ public abstract class AutonomousGeneric extends LinearOpModeWrapper {
         setup();
         waitForStart();
         DiscretePositionArm arm = new DiscretePositionArm(
-                        hardwareMap.get(DcMotor.class, "slide"),
-                        false,
-                        Constants.TEAM2_SLIDE_FRONT_COUNTS,
-                        Constants.TEAM2_SLIDE_BACK_COUNTS
-                );
-        arm.moveToFront(Constants.TEAM2_SLIDE_SPEED);
+                hardwareMap.get(DcMotor.class, "arm"),
+                false,
+                Constants.TEAM1_ARM_FRONT_COUNTS,
+                Constants.TEAM1_ARM_BACK_COUNTS
+        );
         DriveTrainController driveTrain = new DriveTrainController(new DriveTrain(
                 hardwareMap.get(DcMotor.class, "left_drivetrain_motor"),
                 hardwareMap.get(DcMotor.class, "right_drivetrain_motor"),
-                false
+                true
         ),
                 new RootMapping(2),
                 new CosMapping(),
                 0,0
         );
+        ServoGrabber grabber = new ServoGrabber(hardwareMap.get(Servo.class, "grabber"), Constants.TEAM1_GRABBER_CLOSED_POS, Constants.TEAM1_GRABBER_OPEN_POS);
+        arm.moveToFront(Constants.TEAM1_ARM_SPEED);
+        grabber.setClosed(true);
 
-        new DriveForwardCounts().run(this, driveTrain, 2000, 0.5);
-        new TurnCounts().run(this, driveTrain, -420, 0.5);
+        new DriveForwardCounts().run(this, driveTrain, 1000, 0.20);
+        new TurnCounts().run(this, driveTrain, 300, 0.25);
         new Deliver().run(this, 1000, 1, isSpinnerReversed);
-        new Team2Deposit().run(this, arm);
+        new Team1Deposit().run(this, arm, grabber);
     }
 
     public abstract void setup();

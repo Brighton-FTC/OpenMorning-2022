@@ -25,17 +25,17 @@ public class DriveTrainController {
     }
 
     public void drive_scaled(double speed, double turn) {
-        drive_scaled(speed, turn, 1.0);
+        drive_scaled(speed, turn, 1.0, 1.0);
     }
 
-    public void drive_scaled(double speed, double turn, double overallScale){
+    public void drive_scaled(double speed, double turn, double overallScale, double turnScale){
         driveTrainState = DriveTrainState.DRIVER_CONTROLLED;
 
         // scale from -1 to 1
         speed = speedMapping.map(speed);
-        turn = turnMapping.map(turn) * 0.5;
+        turn = turnMapping.map(turn);
 
-        driveTrain.arcadeDriveScale(speed * overallScale, turn * overallScale);
+        driveTrain.arcadeDriveScale(speed * overallScale, turn * overallScale * turnScale);
     }
 
     public void drive_unscaled(double speed, double turn){
@@ -46,6 +46,7 @@ public class DriveTrainController {
 
     public boolean isBusy(){
         if (driveTrainState == DriveTrainState.DRIVER_CONTROLLED) return false;
+        // BUG: see https://ftcforum.firstinspires.org/forum/ftc-technology/3315-questionable-isbusy-behavior
         return driveTrain.leftMotor.isBusy() || driveTrain.rightMotor.isBusy();
     }
 
@@ -66,7 +67,8 @@ public class DriveTrainController {
     }
 
     public void startDrivingForward(double distance, double speed) {
-        if (isBusy()) throw new RuntimeException("Interrupting drivetrain operation");
+        // BUG: see https://ftcforum.firstinspires.org/forum/ftc-technology/3315-questionable-isbusy-behavior
+//        if (isBusy()) throw new RuntimeException("Interrupting drivetrain operation");
         driveTrainState = DriveTrainState.AUTO_DRIVE;
 
         driveTrain.rightMotor.setPower(speed);
@@ -115,9 +117,5 @@ public class DriveTrainController {
         driveTrain.rightMotor.setMode(DcMotor.RunMode.STOP_AND_RESET_ENCODER);
         driveTrain.leftMotor.setMode(lastMode);
         driveTrain.rightMotor.setMode(lastMode);
-    }
-
-    public void waitWhileBusy() throws InterruptedException {
-        while (this.isBusy()) { sleep(50); }
     }
 }
