@@ -42,6 +42,7 @@ abstract class TeleOpGeneric extends OpModeWrapper {
         ),
                 Constants.TEAM2_DRIVETRAIN_COUNTS_PER_RADIAN,
                 Constants.TEAM2_DRIVETRAIN_COUNTS_PER_METER,
+                new CosMapping(),
                 new CosMapping()
         );
         arm = new DiscretePositionArm(

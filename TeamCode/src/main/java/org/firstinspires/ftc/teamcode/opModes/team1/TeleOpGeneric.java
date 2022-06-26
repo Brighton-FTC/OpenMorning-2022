@@ -33,11 +33,13 @@ abstract class TeleOpGeneric extends OpModeWrapper {
     DebouncedButton raiseArmButton;
     DebouncedButton floatArmButton;
     DebouncedButton powerDownArmButton;
+    ToggleableButton grabberToggle;
 
     public void custom_setup() {
         raiseArmButton = new DebouncedButton(GamepadButton.TRIANGLE);
         floatArmButton = new DebouncedButton(GamepadButton.CIRCLE);
         powerDownArmButton = new DebouncedButton(GamepadButton.CROSS);
+        grabberToggle = new ToggleableButton(GamepadButton.R_BUMPER, false);
         spinner = new CarouselSpinner(hardwareMap.get(DcMotor.class, "carousel_spinner"), false);
         driveTrain = new DriveTrainController(new DriveTrain(
                 hardwareMap.get(DcMotor.class, "left_drivetrain_motor"),
@@ -46,6 +48,7 @@ abstract class TeleOpGeneric extends OpModeWrapper {
         ),
                 Constants.TEAM1_DRIVETRAIN_COUNTS_PER_RADIAN,
                 Constants.TEAM1_DRIVETRAIN_COUNTS_PER_METER,
+                new CosMapping(),
                 new CosMapping()
         );
         arm = new DiscretePositionArm(
@@ -92,11 +95,10 @@ abstract class TeleOpGeneric extends OpModeWrapper {
                 break;
         }
 
-        boolean grabberState = Inputs.isPressed(GamepadButton.R_BUMPER);
-        grabber.setClosed(grabberState);
+        grabber.setClosed(grabberToggle.processTick());
 
         // if arm powered down, slow down for more control
-        boolean isArmPoweredDown = arm.getPower() == 0;
+        boolean isArmPoweredDown = armState == Team1ArmState.ON_GROUND;
 
         double speedMultiplier = isArmPoweredDown ? 0.5 : 1.0;
         double turnMultiplier = isArmPoweredDown ? 0.5 : 1.0;

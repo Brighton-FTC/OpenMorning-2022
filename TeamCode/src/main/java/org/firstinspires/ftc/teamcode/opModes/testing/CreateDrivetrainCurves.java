@@ -16,22 +16,17 @@ import org.firstinspires.ftc.teamcode.inputs.inputs.DebouncedButton;
 import org.firstinspires.ftc.teamcode.inputs.inputs.ToggleableButton;
 import org.firstinspires.ftc.teamcode.wrappers.OpModeWrapper;
 
-/**
- * An opmode for testing motors
- * Press L_BUMPER to toggle drivetrain operation (note that it might override motors 0 and 1
- * Drivetrain:
- *  Left joystick to control
- *  Circle to reset counts on telemetry
- * Motors:
- *  Press R_BUMPER to toggle between selecting motors and servos
- *  Press the circle, square, etc. buttons to select a motor
- *  Cross to switch off motor
- *  Move the left joystick to change the power given to the motor;
- *  if you change motors with the joystick held, the motor will stay at that power
- */
 @TeleOp(name = "Create drivetrain curves", group = "Test")
 public class CreateDrivetrainCurves extends OpModeWrapper {
     DriveTrainController driveTrain;
+
+    DebouncedButton freezeReadings;
+
+    double storedX;
+    double storedY;
+    double storedDesiredX;
+    double storedDesiredY;
+
     @Override
     public void setup() {
         driveTrain = new DriveTrainController(new DriveTrain(
@@ -41,8 +36,10 @@ public class CreateDrivetrainCurves extends OpModeWrapper {
         ),
                 Constants.TEAM1_DRIVETRAIN_COUNTS_PER_RADIAN,
                 Constants.TEAM1_DRIVETRAIN_COUNTS_PER_METER,
+                new LinearMapping(),
                 new LinearMapping()
         );
+        freezeReadings = new DebouncedButton(GamepadButton.R_BUMPER);
     }
 
     @Override
@@ -54,12 +51,22 @@ public class CreateDrivetrainCurves extends OpModeWrapper {
 
         driveTrain.drive_scaled(speed, turn);
 
-        telemetry.addData("Speed", speed);
-        telemetry.addData("Turn", turn);
-        telemetry.addData("Current x", leftJoystick.x);
-        telemetry.addData("Wanted x", rightJoystick.x);
-        telemetry.addData("Current y", leftJoystick.y);
-        telemetry.addData("Wanted y", rightJoystick.y);
+        telemetry.addData("x", leftJoystick.x);
+        telemetry.addData("Desired x", rightJoystick.x);
+        telemetry.addData("y", -leftJoystick.y);
+        telemetry.addData("Desired y", -rightJoystick.y);
+
+        if(freezeReadings.processTick()) {
+            storedX = leftJoystick.x;
+            storedY = -leftJoystick.y;
+            storedDesiredX = rightJoystick.x;
+            storedDesiredY = -rightJoystick.y;
+        }
+
+        telemetry.addData("Stored x", storedX);
+        telemetry.addData("Stored desired x", storedDesiredX);
+        telemetry.addData("Stored y", storedY);
+        telemetry.addData("Stored desired y", storedDesiredY);
 
         telemetry.update();
     }

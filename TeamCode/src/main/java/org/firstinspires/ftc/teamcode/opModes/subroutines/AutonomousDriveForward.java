@@ -26,6 +26,7 @@ public class AutonomousDriveForward {
         ),
                 Constants.TEAM1_DRIVETRAIN_COUNTS_PER_RADIAN,
                 Constants.TEAM1_DRIVETRAIN_COUNTS_PER_METER,
+                new CosMapping(),
                 new CosMapping()
         );
         Telemetry telemetry = TelemetryContainer.getTelemetry();

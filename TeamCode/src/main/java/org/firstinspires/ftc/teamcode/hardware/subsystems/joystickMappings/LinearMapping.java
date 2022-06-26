@@ -1,13 +1,8 @@
 package org.firstinspires.ftc.teamcode.hardware.subsystems.joystickMappings;
 
-public class LinearMapping implements JoystickMapping{
+public class LinearMapping extends JoystickMapping{
     @Override
-    public double mapSpeed(double input) {
-        return input;
-    }
-
-    @Override
-    public double mapTurning(double input) {
+    protected double _map(double input) {
         return input;
     }
 }

@@ -75,6 +75,7 @@ public class TestMotors extends OpModeWrapper {
         ),
                 Constants.TEAM1_DRIVETRAIN_COUNTS_PER_RADIAN,
                 Constants.TEAM1_DRIVETRAIN_COUNTS_PER_METER,
+                new CosMapping(),
                 new CosMapping()
         );
         // Number of counts since start

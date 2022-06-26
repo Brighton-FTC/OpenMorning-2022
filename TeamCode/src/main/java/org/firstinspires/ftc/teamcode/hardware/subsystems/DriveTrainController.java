@@ -11,22 +11,24 @@ public class DriveTrainController {
     private final double countsPerRadian;
     private final double countPerMeter;
     private DriveTrainState driveTrainState;
-    private JoystickMapping mapping;
+    private JoystickMapping speedMapping;
+    private JoystickMapping turnMapping;
 
-    public DriveTrainController(DriveTrain driveTrain, double countsPerRadian, double countPerMeter, JoystickMapping mapping){
+    public DriveTrainController(DriveTrain driveTrain, double countsPerRadian, double countPerMeter, JoystickMapping speedMapping, JoystickMapping turnMapping){
         this.driveTrain = driveTrain;
         this.countsPerRadian = countsPerRadian;
         this.countPerMeter = countPerMeter;
         this.driveTrainState = DriveTrainState.DRIVER_CONTROLLED;
-        this.mapping = mapping;
+        this.speedMapping = speedMapping;
+        this.turnMapping = turnMapping;
     }
 
     public void drive_scaled(double speed, double turn) {
         driveTrainState = DriveTrainState.DRIVER_CONTROLLED;
 
         // scale from -1 to 1
-        speed = mapping.mapSpeed(speed);
-        turn = mapping.mapTurning(turn);
+        speed = speedMapping.map(speed);
+        turn = turnMapping.map(turn) * 0.5;
 
         driveTrain.arcadeDriveScale(speed, turn);
     }
@@ -34,6 +36,22 @@ public class DriveTrainController {
     public boolean isBusy(){
         if (driveTrainState == DriveTrainState.DRIVER_CONTROLLED) return false;
         return driveTrain.leftMotor.isBusy() || driveTrain.rightMotor.isBusy();
+    }
+
+    public JoystickMapping getSpeedMapping(){
+        return speedMapping;
+    }
+
+    public JoystickMapping getTurnMapping() {
+        return turnMapping;
+    }
+
+    public void setTurnMapping(JoystickMapping turnMapping){
+        this.turnMapping = turnMapping;
+    }
+
+    public void setSpeedMapping(JoystickMapping speedMapping){
+        this.speedMapping = speedMapping;
     }
 
     public void startDrivingForward(double distance, double speed) {
