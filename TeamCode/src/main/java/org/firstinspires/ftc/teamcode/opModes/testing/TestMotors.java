@@ -111,7 +111,10 @@ public class TestMotors extends OpModeWrapper {
             double speed = -leftJoystick.y * 0.5;
             double turn = leftJoystick.x;
 
-            if (driveTrainLockHorizontalComponentButton.processTick()) turn = 0.0;
+            if (driveTrainLockHorizontalComponentButton.processTick()) {
+                telemetry.addLine("Drivetrain locked forwards");
+                turn = 0.0;
+            }
 
             telemetry.addLine("Driving");
 

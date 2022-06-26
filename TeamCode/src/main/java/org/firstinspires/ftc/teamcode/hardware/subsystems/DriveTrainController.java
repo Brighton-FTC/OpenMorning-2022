@@ -64,6 +64,21 @@ public class DriveTrainController {
         incrementDesiredMotorCounts(countDiff, countDiff);
     }
 
+    /**
+     * Uses counts of each motor
+     * @param leftCounts number of counts to add to left drive motor
+     * @param rightCounts number of counts to add to right drive motor
+     * @param speed maximum speed of motors
+     */
+    public void startDrivingCounts(int leftCounts, int rightCounts, double speed) {
+        if (isBusy()) throw new RuntimeException("Interrupting drivetrain operation");
+        driveTrainState = DriveTrainState.AUTO_DRIVE;
+
+        driveTrain.rightMotor.setPower(speed);
+        driveTrain.leftMotor.setPower(speed);
+        incrementDesiredMotorCounts(leftCounts, rightCounts);
+    }
+
     public void startTurn(double turnRadians, double speed) {
         if (isBusy()) throw new RuntimeException("Interrupting drivetrain operation");
         driveTrainState = DriveTrainState.AUTO_TURN;
