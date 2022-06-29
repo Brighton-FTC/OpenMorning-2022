@@ -96,10 +96,10 @@ abstract class TeleOpGeneric extends OpModeWrapper {
 
         grabber.setClosed(grabberToggle.processTick());
 
-        // if arm powered down, slow down for more control
-        boolean isArmPoweredDown = armState == Team1ArmState.ON_GROUND;
+        // if arm powered down or flipped, slow down for more control
+        boolean needToSlowDown = armState != Team1ArmState.FLOATING;
 
-        double scale = isArmPoweredDown ? 0.5 : 1.0;
+        double scale = needToSlowDown ? 0.5 : 1.0;
 
         /* Drivetrain */
         // CONTROLS: Left joystick
