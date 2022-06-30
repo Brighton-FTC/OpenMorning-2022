@@ -20,7 +20,9 @@ public class TurnCounts {
         telemetry.addData("Before Turn - Is drivetrain busy", driveTrain.isBusy());
         telemetry.update();
         driveTrain.startDrivingCounts(counts, -counts, speed);
-        while (driveTrain.isBusy()) { opMode.sleep(50); }
+        while (driveTrain.isBusy()) {
+            if (opMode.isStopRequested()) return;
+            opMode.sleep(50); }
         telemetry.addData("Turn - Is drivetrain busy", driveTrain.isBusy());
         telemetry.update();
     }

@@ -16,10 +16,16 @@ public class Team2Deposit {
 
         arm.moveToBack(Constants.TEAM2_SLIDE_SPEED);
 
-        while (arm.isBusy()) opMode.sleep(50);
+        while (arm.isBusy()) {
+            if (opMode.isStopRequested()) return;
+            opMode.sleep(50);
+        }
 
         arm.moveToFront(Constants.TEAM2_SLIDE_SPEED);
 
-        while (arm.isBusy()) opMode.sleep(50);
+        while (arm.isBusy()){
+            if (opMode.isStopRequested()) return;
+            opMode.sleep(50);
+        }
     }
 }

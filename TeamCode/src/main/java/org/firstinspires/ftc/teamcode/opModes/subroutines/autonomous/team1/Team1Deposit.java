@@ -13,7 +13,10 @@ public class Team1Deposit {
         HardwareMap hardwareMap = opMode.hardwareMap;
 
         arm.moveToBack(Constants.TEAM1_ARM_SPEED);
-        while (arm.isBusy()) opMode.sleep(50);
+        while (arm.isBusy()) {
+            if (opMode.isStopRequested()) return;
+            opMode.sleep(50);
+        }
 
         grabber.setClosed(false);
 
@@ -22,6 +25,9 @@ public class Team1Deposit {
         grabber.setClosed(true);
 
         arm.moveToFront(Constants.TEAM1_ARM_SPEED);
-        while (arm.isBusy()) opMode.sleep(50);
+        while (arm.isBusy()) {
+            if (opMode.isStopRequested()) return;
+            opMode.sleep(50);
+        }
     }
 }

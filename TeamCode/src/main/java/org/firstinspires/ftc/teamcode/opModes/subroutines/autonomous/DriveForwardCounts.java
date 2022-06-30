@@ -14,7 +14,10 @@ import org.firstinspires.ftc.teamcode.libs.util.TelemetryContainer;
 public class DriveForwardCounts {
     public void run(LinearOpMode opMode, DriveTrainController driveTrain, int counts, double speed) throws InterruptedException {
         driveTrain.startDrivingCounts(counts, counts, speed);
-        while (driveTrain.isBusy()) { opMode.sleep(50); }
+        while (driveTrain.isBusy()) {
+            if (opMode.isStopRequested()) return;
+            opMode.sleep(50);
+        }
         Telemetry telemetry = TelemetryContainer.getTelemetry();
         telemetry.addData("Drive Forward - Is drivetrain busy", driveTrain.isBusy());
     }

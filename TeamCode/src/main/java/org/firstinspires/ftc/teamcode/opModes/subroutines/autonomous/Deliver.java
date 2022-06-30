@@ -26,7 +26,10 @@ public class Deliver {
 
         spinner.spin(speed);
 
-        while (timer.getTimePassed() < timeMs) opMode.sleep(50);
+        while (timer.getTimePassed() < timeMs) {
+            if (opMode.isStopRequested()) return;
+            opMode.sleep(50);
+        }
 
         spinner.spin(0);
     }
