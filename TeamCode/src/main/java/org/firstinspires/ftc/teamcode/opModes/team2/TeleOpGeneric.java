@@ -100,7 +100,7 @@ abstract class TeleOpGeneric extends OpModeWrapper {
         double speed = Maths.clamp(-leftJoystick.y - rightJoystick.y, -1, 1);
         double turn = Maths.clamp(-leftJoystick.x + rightJoystick.x, -1, 1);
 
-        driveTrain.drive_scaled(speed, turn, scale, 0.75);
+        driveTrain.drive_scaled(speed, turn, scale, 0.4);
 
         telemetry.update();
     }
