@@ -39,7 +39,7 @@ abstract class TeleOpGeneric extends OpModeWrapper {
         raiseArmButton = new DebouncedButton(GamepadButton.TRIANGLE);
         floatArmButton = new DebouncedButton(GamepadButton.CIRCLE);
         powerDownArmButton = new DebouncedButton(GamepadButton.CROSS);
-        grabberToggle = new ToggleableButton(GamepadButton.R_BUMPER, false);
+        grabberToggle = new ToggleableButton(GamepadButton.R_BUMPER, true); // Closed at start
         spinner = new CarouselSpinner(hardwareMap.get(DcMotor.class, "carousel_spinner"), false);
         driveTrain = new DriveTrainController(new DriveTrain(
                 hardwareMap.get(DcMotor.class, "left_drivetrain_motor"),

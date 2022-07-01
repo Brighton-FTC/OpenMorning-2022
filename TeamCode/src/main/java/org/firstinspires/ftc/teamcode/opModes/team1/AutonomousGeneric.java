@@ -42,10 +42,8 @@ public abstract class AutonomousGeneric extends LinearOpModeWrapper {
         arm.moveToFront(Constants.TEAM1_ARM_SPEED);
         grabber.setClosed(true);
 
+        /* Drive forwards into the warehouse */
         new DriveForwardCounts().run(this, driveTrain, 1000, 0.20);
-        new TurnCounts().run(this, driveTrain, 300, 0.25);
-        new Deliver().run(this, 1000, 1, isSpinnerReversed);
-        new Team1Deposit().run(this, arm, grabber);
     }
 
     public abstract void setup();
