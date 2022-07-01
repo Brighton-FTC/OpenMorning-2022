@@ -85,6 +85,3 @@ lint/generated/
 lint/outputs/
 lint/tmp/
 # lint/reports/
-
-# Private data (license keys, etc.)
-TeamCode/src/main/res/raw/vuforia.txt
